@@ -5,26 +5,19 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-import me.guillem.athm2app.Obra;
+import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.R;
-import me.guillem.athm2app.RecyclerAdapterCardsMap;
 
 
 public class InfoFragment extends Fragment {

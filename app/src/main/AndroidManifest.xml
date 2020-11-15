@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ATHM2APP">
         <activity
-            android:name=".DetailObra"
+            android:name=".Views.DetailObra"
             android:label="@string/title_activity_info_obra"
             android:theme="@style/Theme.ATHM2APP.NoActionBar"></activity>
         <!--
@@ -33,9 +33,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Views.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Views.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

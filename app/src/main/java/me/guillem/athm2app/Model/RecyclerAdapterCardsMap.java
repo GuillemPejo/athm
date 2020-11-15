@@ -1,4 +1,4 @@
-package me.guillem.athm2app;
+package me.guillem.athm2app.Model;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
 import java.util.List;
+
+import me.guillem.athm2app.Views.DetailObra;
+import me.guillem.athm2app.R;
 
 public class RecyclerAdapterCardsMap extends RecyclerView.Adapter<RecyclerAdapterCardsMap.ViewHolder>{
     List<Obra> llistadObres;

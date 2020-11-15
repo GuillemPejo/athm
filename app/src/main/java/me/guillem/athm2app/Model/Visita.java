@@ -1,4 +1,4 @@
-package me.guillem.athm2app;
+package me.guillem.athm2app.Model;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package me.guillem.athm2app;
+package me.guillem.athm2app.Model;
 
 import com.google.firebase.database.Exclude;
 
@@ -13,7 +13,7 @@ public class Obra implements Serializable {
     String estat;
     String tecnic;
     String tip_p;
-    String  data_inici;
+    String data_inici;
     String data_final;
     String prorroga;
     String caduc_permis;

@@ -1,28 +1,30 @@
-package me.guillem.athm2app;
+package me.guillem.athm2app.Views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.Serializable;
-
-import me.guillem.athm2app.ui.InfoFragment;
+import me.guillem.athm2app.Model.Obra;
+import me.guillem.athm2app.PageTabsAdapter;
+import me.guillem.athm2app.R;
+import me.guillem.athm2app.Utils.Utils;
 
 public class DetailObra extends AppCompatActivity {
+
+    private Obra receivedObra;
+    TextView titol, adresa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_obra);
+
 
         ViewPager viewPager = findViewById(R.id.view_pager);
 
@@ -40,13 +42,10 @@ public class DetailObra extends AppCompatActivity {
                 tabs.getTabCount(), obra);
         viewPager.setAdapter(pagerAdapter);
 
+        titol = findViewById(R.id.titol);
+        adresa = findViewById(R.id.aaa);
 
-
-        TextView t1 = findViewById(R.id.titol);
-        TextView t2 = findViewById(R.id.aaa);
-
-        t1.setText(obra.getTitol());
-        t2.setText(obra.getAdreça());
+        receiveAndShowData();
 
 
 /*        FragmentManager fragmentManager = getSupportFragmentManager();
@@ -95,4 +94,14 @@ public class DetailObra extends AppCompatActivity {
 
 
     }
+    private void receiveAndShowData() {
+        receivedObra = Utils.receiveObra(getIntent(), DetailObra.this);
+
+        if (receivedObra != null) {
+            titol.setText(receivedObra.getTitol());
+            adresa.setText(receivedObra.getAdreça());
+
+        }
+    }
+
 }

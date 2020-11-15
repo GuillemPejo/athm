@@ -1,4 +1,4 @@
-package me.guillem.athm2app;
+package me.guillem.athm2app.Views;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -28,6 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.guillem.athm2app.Model.Obra;
+import me.guillem.athm2app.Model.RecyclerAdapterCardsMap;
+import me.guillem.athm2app.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -84,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         public void onPageSelected(int position) {
                             super.onPageSelected(position);
                             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DataCache.get(position).lat, DataCache.get(position).lng), zoomLevel));
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DataCache.get(position).lat, DataCache.get(position).lng), zoomLevel));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DataCache.get(position).getLat(), DataCache.get(position).getLng()), zoomLevel));
 
                         }
                     });
@@ -105,9 +109,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for(int i = 0;i<DataCache.size();i++)
         {
-            LatLng lat = new LatLng(DataCache.get(i).lat,DataCache.get(i).lng);
+            LatLng lat = new LatLng(DataCache.get(i).getLat(),DataCache.get(i).getLng());
 
-            mMap.addMarker(new MarkerOptions().position(lat).title(DataCache.get(i).key).icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.icon_map)));
+            mMap.addMarker(new MarkerOptions().position(lat).title(DataCache.get(i).getKey()).icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.icon_map)));
         }
 
 
@@ -116,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onMarkerClick(Marker marker) {
                 for(int i = 0;i<DataCache.size();i++)
                 {
-                    if(marker.getTitle().equals(DataCache.get(i).key)){
+                    if(marker.getTitle().equals(DataCache.get(i).getKey())){
                         viewpager_cards.setCurrentItem(i, false);
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), zoomLevel));
                         break;
