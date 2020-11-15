@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "182595070461",
+    "firebase_url": "https://athm2-2020.firebaseio.com",
+    "project_id": "athm2-2020",
+    "storage_bucket": "athm2-2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182595070461:android:d5b353e6ba282823d65194",
+        "android_client_info": {
+          "package_name": "me.guillem.athm2app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182595070461-td6uddt8c40uthqg870p1galb76g78v1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMSo5XeMQintOU66PCfPVNWR2s_ZCXWXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182595070461-td6uddt8c40uthqg870p1galb76g78v1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

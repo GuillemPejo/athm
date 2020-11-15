@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ATHM2APP</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_info_obra">InfoObra</string>
+    <string name="tab_text_1">INFO</string>
+    <string name="tab_text_2">VISITES</string>
+    <string name="tab_text_3">DOCS</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
