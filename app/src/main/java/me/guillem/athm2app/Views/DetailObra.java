@@ -19,6 +19,8 @@ public class DetailObra extends AppCompatActivity {
 
     private Obra receivedObra;
     TextView titol, adresa;
+    ViewPager viewPager;
+    TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +28,14 @@ public class DetailObra extends AppCompatActivity {
         setContentView(R.layout.activity_info_obra);
 
 
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager = findViewById(R.id.view_pager);
 
-        TabLayout tabs = findViewById(R.id.tabs);
+        tabs = findViewById(R.id.tabs);
         TabItem tabinfo = findViewById(R.id.info_tab);
         TabItem tabvisitas = findViewById(R.id.visitas_tab);
         TabItem tabdocs = findViewById(R.id.docs_tab);
 
         tabs.setupWithViewPager(viewPager);
-
-        Bundle objetoenviado = getIntent().getExtras();
-        Obra obra = (Obra) objetoenviado.getSerializable("obra");
-
-        PagerAdapter pagerAdapter = new PageTabsAdapter(getSupportFragmentManager(),
-                tabs.getTabCount(), obra);
-        viewPager.setAdapter(pagerAdapter);
 
         titol = findViewById(R.id.titol);
         adresa = findViewById(R.id.aaa);
@@ -100,8 +95,11 @@ public class DetailObra extends AppCompatActivity {
         if (receivedObra != null) {
             titol.setText(receivedObra.getTitol());
             adresa.setText(receivedObra.getAdreça());
-
         }
+
+        PagerAdapter pagerAdapter = new PageTabsAdapter(getSupportFragmentManager(),
+                tabs.getTabCount(), receivedObra);
+        viewPager.setAdapter(pagerAdapter);
     }
 
 }
