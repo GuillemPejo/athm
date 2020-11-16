@@ -12,20 +12,53 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ObjectInputStream;
 import java.util.List;
 
+import me.guillem.athm2app.Utils.Utils;
 import me.guillem.athm2app.Views.DetailObra;
 import me.guillem.athm2app.R;
 
 public class RecyclerAdapterCardsMap extends RecyclerView.Adapter<RecyclerAdapterCardsMap.ViewHolder>{
-    List<Obra> llistadObres;
-    Context context;
+
+    private Context context;
+    public List<Obra> llistadobres;
+
+    interface ItemClickListener {
+        void onItemClick(int pos);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView tiol, adreça, estat;
+        private Button button;
+        private ItemClickListener itemClickListener;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            adreça = itemView.findViewById(R.id.adreça);
+            tiol = itemView.findViewById(R.id.titol);
+            estat = itemView.findViewById(R.id.estat);
+            button = itemView.findViewById(R.id.button);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            this.itemClickListener.onItemClick(this.getLayoutPosition());
+        }
+
+        void setItemClickListener(RecyclerAdapterCardsMap.ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
+    }
 
     public RecyclerAdapterCardsMap(Context context, List<Obra> llistadObres){
         this.context = context;
-        this.llistadObres = llistadObres;
+        this.llistadobres = llistadObres;
 
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,43 +67,38 @@ public class RecyclerAdapterCardsMap extends RecyclerView.Adapter<RecyclerAdapte
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Obra o = llistadobres.get(position);
 
-        holder.adreça.setText(llistadObres.get(position).getAdreça());
-        holder.tiol.setText(llistadObres.get(position).getTitol());
-        holder.estat.setText(llistadObres.get(position).getEstat());
-
+        holder.adreça.setText(o.getAdreça());
+        holder.tiol.setText(o.getTitol());
+        holder.estat.setText(o.getEstat());
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailObra.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("obra", llistadObres.get(position));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                Utils.sendObraToActivity(RecyclerAdapterCardsMap.this.context, o,
+                        DetailObra.class);
             }
         });
+
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+
+                Utils.sendObraToActivity(RecyclerAdapterCardsMap.this.context, o,
+                        DetailObra.class);
+            }
+        });
+
 
     }
 
     @Override
     public int getItemCount() {
-        return llistadObres.size();
+        return llistadobres.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tiol, adreça, estat;
-        Button button;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            adreça = itemView.findViewById(R.id.adreça);
-            tiol = itemView.findViewById(R.id.titol);
-            estat = itemView.findViewById(R.id.estat);
-            button = itemView.findViewById(R.id.button);
-        }
-    }
+
 
 }

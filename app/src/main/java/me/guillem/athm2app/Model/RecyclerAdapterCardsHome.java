@@ -28,7 +28,6 @@ import me.guillem.athm2app.Utils.Utils;
 
 import static me.guillem.athm2app.Utils.Utils.searchString;
 
-
 public class RecyclerAdapterCardsHome extends RecyclerView.Adapter<RecyclerAdapterCardsHome.ViewHolder> implements Filterable {
 
     private Context context;
@@ -43,9 +42,7 @@ public class RecyclerAdapterCardsHome extends RecyclerView.Adapter<RecyclerAdapt
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tiol, adreça, ref, responsable;
         private FrameLayout barra;
-        private ImageButton button;
         private ItemClickListener itemClickListener;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -54,9 +51,7 @@ public class RecyclerAdapterCardsHome extends RecyclerView.Adapter<RecyclerAdapt
             ref = itemView.findViewById(R.id.referencia);
             responsable = itemView.findViewById(R.id.responsable);
             barra = itemView.findViewById(R.id.barra);
-            button = itemView.findViewById(R.id.imgbt2);
             itemView.setOnClickListener(this);
-
         }
         @Override
         public void onClick(View view) {
@@ -142,20 +137,6 @@ public class RecyclerAdapterCardsHome extends RecyclerView.Adapter<RecyclerAdapt
 
                 Utils.sendObraToActivity(RecyclerAdapterCardsHome.this.context, o,
                         DetailObra.class);
-            }
-        });
-
-
-
-        holder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailObra.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("obra", llistadobres.get(position));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
             }
         });
 

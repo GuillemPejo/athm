@@ -24,9 +24,9 @@ import me.guillem.athm2app.Views.DetailObra;
 
 public class InfoFragment extends Fragment {
 
-    Obra obra;
     private Obra receivedObra;
     TextView resp, ref, state, tpermis, prorroga, dini, dfin;
+    ImageView aniView;
 
     public InfoFragment() {
     }
@@ -52,30 +52,14 @@ public class InfoFragment extends Fragment {
         prorroga = (TextView) v.findViewById(R.id.prorroga);
         dini = (TextView) v.findViewById(R.id.data_inici);
         dfin = (TextView) v.findViewById(R.id.data_fi);
-        ImageView aniView = (ImageView) v.findViewById(R.id.circle);
+        aniView = (ImageView) v.findViewById(R.id.circle);
         FrameLayout timeline = (FrameLayout) v.findViewById(R.id.barra);
 
+        receiveAndShowData();
 
-        Bundle b3 = getArguments();
-        Obra obra = (Obra) b3.getSerializable("key");
-
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate date1 = LocalDate.parse(obra.getData_inici(), dtf);
-        LocalDate date2 = LocalDate.parse(obra.getData_final(), dtf);
-        long duracio_obra = ChronoUnit.DAYS.between(date1, date2);
-        System.out.println("Days: " + duracio_obra);
-        LocalDate today = LocalDate.now();
-        long dia_avui = ChronoUnit.DAYS.between(date1, today);
-        System.out.println("Days: " + dia_avui);
-        long posicio = (320 / duracio_obra) * dia_avui;
-        System.out.println("posicio: " + posicio);
-        ObjectAnimator animation = ObjectAnimator.ofFloat(aniView, "translationY", posicio);
-        animation.setDuration(2000);
-        animation.start();
-
-
-        // Inflate the layout for this fragment
+        //Bundle b3 = getArguments();
+        //Obra obra = (Obra) b3.getSerializable("key");
+                // Inflate the layout for this fragment
         return v;
     }
 
@@ -83,13 +67,27 @@ public class InfoFragment extends Fragment {
         receivedObra = Utils.receiveObra(getActivity().getIntent(), getContext());
 
         if (receivedObra != null) {
-            resp.setText(obra.getTecnic());
-            ref.setText(obra.getRef());
-            state.setText(obra.getEstat());
-            tpermis.setText(obra.getTip_p());
-            prorroga.setText(obra.getProrroga());
-            dini.setText(obra.getData_inici());
-            dfin.setText(obra.getData_final());
+            resp.setText(receivedObra.getTecnic());
+            ref.setText(receivedObra.getRef());
+            state.setText(receivedObra.getEstat());
+            tpermis.setText(receivedObra.getTip_p());
+            prorroga.setText(receivedObra.getProrroga());
+            dini.setText(receivedObra.getData_inici());
+            dfin.setText(receivedObra.getData_final());
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate date1 = LocalDate.parse(receivedObra.getData_inici(), dtf);
+            LocalDate date2 = LocalDate.parse(receivedObra.getData_final(), dtf);
+            long duracio_obra = ChronoUnit.DAYS.between(date1, date2);
+            //System.out.println("Days: " + duracio_obra);
+            LocalDate today = LocalDate.now();
+            long dia_avui = ChronoUnit.DAYS.between(date1, today);
+            //System.out.println("Days: " + dia_avui);
+            long posicio = (320 / duracio_obra) * dia_avui;
+            //System.out.println("posicio: " + posicio);
+            ObjectAnimator animation = ObjectAnimator.ofFloat(aniView, "translationY", posicio);
+            animation.setDuration(2000);
+            animation.start();
         }
     }
 }

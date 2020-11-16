@@ -89,16 +89,6 @@
                 android:text="REF2020"
                 android:textSize="12dp" />
 
-            <ImageButton
-                android:id="@+id/imgbt2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="26dp"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/rounded_circle_grey"
-                app:srcCompat="@drawable/ic_baseline_chevron_right_24" />
         </RelativeLayout>
 
 
