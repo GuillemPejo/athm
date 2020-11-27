@@ -21,13 +21,14 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_ATHM2APP_Launcher);
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(this, HomeActivity.class);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
+                startActivity(intent);
+                finish();            }
         }, 2000);
     }
 
