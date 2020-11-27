@@ -1,9 +1,7 @@
 package me.guillem.athm2app.Model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Locale;
 
-import me.guillem.athm2app.Views.DetailObra;
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.FilterHelper;
 import me.guillem.athm2app.Utils.Utils;
+import me.guillem.athm2app.Views.DetailObra;
 
 import static me.guillem.athm2app.Utils.Utils.searchString;
 

@@ -16,10 +16,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ATHM2APP">
+        <activity android:name=".Views.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Views.DetailObra"
             android:label="@string/title_activity_info_obra"
-            android:theme="@style/Theme.ATHM2APP.NoActionBar"></activity>
+            android:theme="@style/Theme.ATHM2APP.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -35,12 +42,8 @@
         <activity
             android:name=".Views.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".Views.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity
+            android:name=".Views.HomeActivity">
         </activity>
     </application>
 

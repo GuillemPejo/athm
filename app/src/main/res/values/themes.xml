@@ -19,6 +19,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.ATHM2APP.Launcher">
+    <item name="android:windowBackground">@drawable/launch_screen_logo</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="Theme.ATHM2APP.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ATHM2APP.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

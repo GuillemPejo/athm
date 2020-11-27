@@ -1,8 +1,6 @@
 package me.guillem.athm2app.Model;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.ObjectInputStream;
 import java.util.List;
 
+import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.Utils;
 import me.guillem.athm2app.Views.DetailObra;
-import me.guillem.athm2app.R;
 
 public class RecyclerAdapterCardsMap extends RecyclerView.Adapter<RecyclerAdapterCardsMap.ViewHolder>{
 
