@@ -1,7 +1,10 @@
 package me.guillem.athm2app.Views;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -26,6 +29,17 @@ public class DetailObra extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_obra);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+/*        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_chevron_left_24);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleOnBackPress();
+            }
+        });*/
 
 
         viewPager = findViewById(R.id.view_pager);
@@ -89,11 +103,13 @@ public class DetailObra extends AppCompatActivity {
 
 
     }
+
     private void receiveAndShowData() {
         receivedObra = Utils.receiveObra(getIntent(), DetailObra.this);
 
         if (receivedObra != null) {
-            titol.setText(receivedObra.getTitol());
+            getSupportActionBar().setTitle(receivedObra.getTitol());
+            //titol.setText(receivedObra.getTitol());
             adresa.setText(receivedObra.getAdreça());
         }
 
@@ -101,5 +117,6 @@ public class DetailObra extends AppCompatActivity {
                 tabs.getTabCount(), receivedObra);
         viewPager.setAdapter(pagerAdapter);
     }
+
 
 }

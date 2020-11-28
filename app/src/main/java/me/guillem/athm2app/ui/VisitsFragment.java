@@ -63,4 +63,7 @@ public class VisitsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_visits, container, false);
     }
+
+
+
 }

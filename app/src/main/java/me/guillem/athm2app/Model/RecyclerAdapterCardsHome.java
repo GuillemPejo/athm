@@ -12,6 +12,7 @@ import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,7 +106,7 @@ public class RecyclerAdapterCardsHome extends RecyclerView.Adapter<RecyclerAdapt
 
             Spannable spanString = Spannable.Factory.getInstance().
                     newSpannable(holder.tiol.getText());
-            spanString.setSpan(new ForegroundColorSpan(Color.RED), startPos, endPos,
+            spanString.setSpan(new ForegroundColorSpan(Color.BLUE), startPos, endPos,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             holder.tiol.setText(spanString);

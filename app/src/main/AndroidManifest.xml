@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.ATHM2APP">
         <activity android:name=".Views.SplashScreen">
@@ -26,7 +26,8 @@
         <activity
             android:name=".Views.DetailObra"
             android:label="@string/title_activity_info_obra"
-            android:theme="@style/Theme.ATHM2APP.NoActionBar" />
+            android:parentActivityName=".Views.HomeActivity"
+            android:theme="@style/Theme.ATHM2APP" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

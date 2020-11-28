@@ -48,6 +48,24 @@ public class PageTabsAdapter extends FragmentPagerAdapter {
         }
         return  fragment;
     }
+    @Override
+    public CharSequence getPageTitle(int position) {
+
+        String section = null;
+
+        switch (position) {
+            case 0:
+                section = "INFO";
+                break;
+            case 1:
+                section = "VISITES";
+                break;
+            case 2:
+                section = "DOCS";
+                break;
+        }
+        return section;
+    }
 
     @Override
     public int getCount() {

@@ -9,9 +9,12 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 import me.guillem.athm2app.R;
@@ -21,6 +24,7 @@ import me.guillem.athm2app.Utils.Utils;
 public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
     private RecyclerView rv;
+    public MaterialCardView card;
     public ProgressBar mProgressBar;
     private FirebaseCRUD recurs_crud = new FirebaseCRUD();
     private LinearLayoutManager layoutManager;
@@ -30,6 +34,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        card = findViewById(R.id.card);
+
 
         mProgressBar = findViewById(R.id.mProgressBarLoad);
         mProgressBar.setIndeterminate(true);
@@ -49,6 +55,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
         bindDades();
     }
+
+
 
     private void bindDades(){
         recurs_crud.select(this,Utils.getDatabaseRefence(),mProgressBar,rv,adapter);
