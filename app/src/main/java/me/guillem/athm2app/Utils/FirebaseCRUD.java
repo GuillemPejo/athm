@@ -25,7 +25,7 @@ import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 
 public class FirebaseCRUD {
 
-    public void insert(final AppCompatActivity a, final DatabaseReference mDatabaseRef, final ProgressBar pb, final Obra obra) {
+    public void insert(final AppCompatActivity a, final DatabaseReference mDatabaseRef, final ProgressBar pb, final Object obra) {
         //Comprova que passis un Comerç vàlid. Si no, retorna false.
         if (obra == null) {
             Utils.showInfoDialog(a,"HA FALLAT LA VALIDACIÓ","Obra és null");
