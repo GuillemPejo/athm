@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.guillem.athm2app.R;
+import me.guillem.athm2app.Utils.FirebaseCRUD;
+import me.guillem.athm2app.Utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +27,7 @@ public class VisitsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FirebaseCRUD recurs_crud = new FirebaseCRUD();
 
     public VisitsFragment() {
         // Required empty public constructor
@@ -55,6 +58,7 @@ public class VisitsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        recurs_crud.selectVisit(this, Utils.getDatabaseRefence(), obra_key);
     }
 
     @Override

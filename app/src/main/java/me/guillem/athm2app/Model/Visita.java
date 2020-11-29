@@ -5,32 +5,27 @@ import java.util.Date;
 
 public class Visita {
 
+    String key;
     String data_visita;
     String hora_visita;
     String responsable;
     String nom_visit;
     String descripcio;
-    ArrayList<String> media = new ArrayList<String>();
+    //ArrayList<String> media = new ArrayList<String>();
 
-    public Visita(String data_visita, String hora_visita, String responsable, String nom_visit, String descripcio, ArrayList<String> media, int id_obra) {
+    public Visita(String data_visita, String hora_visita, String responsable, String nom_visit, String descripcio, String key) {
         this.data_visita = data_visita;
         this.hora_visita = hora_visita;
         this.responsable = responsable;
         this.nom_visit = nom_visit;
         this.descripcio = descripcio;
-        this.media = media;
-        this.id_obra = id_obra;
+        //this.media = media;
+        this.key = key;
+    }
+    public Visita(){
+
     }
 
-    int id_obra;
-
-    public int getId_obra() {
-        return id_obra;
-    }
-
-    public void setId_obra(int id_obra) {
-        this.id_obra = id_obra;
-    }
 
     public String getData_visita() {
         return data_visita;
@@ -72,13 +67,20 @@ public class Visita {
         this.descripcio = descripcio;
     }
 
-    public ArrayList<String> getMedia() {
+/*    public ArrayList<String> getMedia() {
         return media;
     }
 
     public void setMedia(ArrayList<String> media) {
         this.media = media;
+    }*/
+
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
-
+    public String getKey() {
+        return key;
+    }
 }

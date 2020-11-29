@@ -15,8 +15,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;
 import static me.guillem.athm2app.Utils.Utils.DataCache;
+import static me.guillem.athm2app.Utils.Utils.DataCacheVisits;
 
 import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
@@ -25,7 +27,7 @@ import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 
 public class FirebaseCRUD {
 
-    public void insert(final AppCompatActivity a, final DatabaseReference mDatabaseRef, final ProgressBar pb, final Object obra) {
+    public void insert(final AppCompatActivity a, final DatabaseReference mDatabaseRef, final ProgressBar pb, final Obra obra) {
         //Comprova que passis un Comerç vàlid. Si no, retorna false.
         if (obra == null) {
             Utils.showInfoDialog(a,"HA FALLAT LA VALIDACIÓ","Obra és null");
@@ -84,6 +86,45 @@ public class FirebaseCRUD {
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("FIREBASE CRUD", databaseError.getMessage());
                 Utils.hideProgressBar(pb);
+                Utils.showInfoDialog(a,"Opss.. Alguna cosa ha anat malament",databaseError.getMessage());
+            }
+        });
+    }
+
+    public void selectVisit(final AppCompatActivity a, DatabaseReference db, String obra_key) {
+        //Utils.showProgressBar(pb);
+
+        db.child("Obra").child(obra_key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataCacheVisits.clear();
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        //Obtenim l'objecte comerç per tal d'omplir l'ArrayList
+                        Visita visita = ds.getValue(Visita.class);
+                        visita.setKey(ds.getKey());
+                        DataCacheVisits.add(visita);
+                    }
+
+                    //adapter.notifyDataSetChanged();
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("DADEEEES: "+DataCacheVisits.get(0)+" -- "+DataCacheVisits.get(1));
+                            //Utils.hideProgressBar(pb);
+                            //rv.smoothScrollToPosition(DataCacheVisits.size());
+
+                        }
+                    });
+                }else {
+                    Utils.show(a,"No s'han trobat nous items");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("FIREBASE CRUD", databaseError.getMessage());
+                //Utils.hideProgressBar(pb);
                 Utils.showInfoDialog(a,"Opss.. Alguna cosa ha anat malament",databaseError.getMessage());
             }
         });

@@ -19,10 +19,12 @@ import java.util.List;
 
 import me.guillem.athm2app.MainActivity;
 import me.guillem.athm2app.Model.Obra;
+import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;
 
 public class Utils {
     public static List<Obra> DataCache =new ArrayList<>();
+    public static List<Visita> DataCacheVisits =new ArrayList<>();
     public static String searchString = "";
 
     public static void show(Context c, String message){

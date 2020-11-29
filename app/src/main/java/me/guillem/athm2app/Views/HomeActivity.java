@@ -2,21 +2,28 @@ package me.guillem.athm2app.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
+import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.FirebaseCRUD;
 import me.guillem.athm2app.Utils.Utils;
@@ -29,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private FirebaseCRUD recurs_crud = new FirebaseCRUD();
     private LinearLayoutManager layoutManager;
     RecyclerAdapterCardsHome adapter;
+    private DatabaseReference mDatabaseRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +62,21 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         rv.setAdapter(adapter);
 
         bindDades();
+        Visita v1 = new Visita("12-12-12","13:20","Ramon","Visita de façana","La infrastructura bla bla", "1");
+        mDatabaseRef.child("Obra").push().setValue(v1).
+                addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            //Utils.openActivity(a, ComercosActivity.class);
+                            Utils.show(getApplication(),"Felicitats! S'ha afegit correctament");
+                        }else{
+                            Log.e("ERROR","Opss.. Alguna cosa ha anat malament");
+                        }
+                    }
+                });
     }
+
 
 
 

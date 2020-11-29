@@ -111,6 +111,7 @@ public class DetailObra extends AppCompatActivity {
             getSupportActionBar().setTitle(receivedObra.getTitol());
             //titol.setText(receivedObra.getTitol());
             adresa.setText(receivedObra.getAdreça());
+            adresa.setText(receivedObra.getKey());
         }
 
         PagerAdapter pagerAdapter = new PageTabsAdapter(getSupportFragmentManager(),
