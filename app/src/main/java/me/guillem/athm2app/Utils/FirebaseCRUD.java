@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import me.guillem.athm2app.Model.RecyclerAdapterCardsVisits;
 import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;
 import static me.guillem.athm2app.Utils.Utils.DataCache;
@@ -91,27 +93,28 @@ public class FirebaseCRUD {
         });
     }
 
-    public void selectVisit(final AppCompatActivity a, DatabaseReference db, String obra_key) {
+    public void selectVisit(final FragmentActivity a, DatabaseReference db, String obra_key, final RecyclerAdapterCardsVisits adapter) {
         //Utils.showProgressBar(pb);
 
-        db.child("Obra").child(obra_key).addValueEventListener(new ValueEventListener() {
+        db.child("Obra").child(obra_key).child("Visites").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataCacheVisits.clear();
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        System.out.println(ds.toString());
                         //Obtenim l'objecte comerç per tal d'omplir l'ArrayList
                         Visita visita = ds.getValue(Visita.class);
                         visita.setKey(ds.getKey());
                         DataCacheVisits.add(visita);
                     }
 
-                    //adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
 
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            System.out.println("DADEEEES: "+DataCacheVisits.get(0)+" -- "+DataCacheVisits.get(1));
+                            System.out.println("DADEEEES: "+DataCacheVisits.get(0).getNom_visit());
                             //Utils.hideProgressBar(pb);
                             //rv.smoothScrollToPosition(DataCacheVisits.size());
 
@@ -125,7 +128,7 @@ public class FirebaseCRUD {
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("FIREBASE CRUD", databaseError.getMessage());
                 //Utils.hideProgressBar(pb);
-                Utils.showInfoDialog(a,"Opss.. Alguna cosa ha anat malament",databaseError.getMessage());
+                Utils.showInfoDialog((AppCompatActivity) a,"Opss.. Alguna cosa ha anat malament",databaseError.getMessage());
             }
         });
     }

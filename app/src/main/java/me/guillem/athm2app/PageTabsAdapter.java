@@ -38,6 +38,7 @@ public class PageTabsAdapter extends FragmentPagerAdapter {
                 break;
             case 1:
                 fragment=new VisitsFragment();
+                fragment.setArguments(bundle);
                 break;
             case 2:
                 fragment=new DocsFragment();

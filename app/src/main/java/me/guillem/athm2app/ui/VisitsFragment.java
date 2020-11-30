@@ -3,11 +3,17 @@ package me.guillem.athm2app.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import me.guillem.athm2app.Model.Obra;
+import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
+import me.guillem.athm2app.Model.RecyclerAdapterCardsVisits;
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.FirebaseCRUD;
 import me.guillem.athm2app.Utils.Utils;
@@ -18,6 +24,11 @@ import me.guillem.athm2app.Utils.Utils;
  * create an instance of this fragment.
  */
 public class VisitsFragment extends Fragment {
+    private Obra receivedObra;
+    RecyclerView rv;
+    LinearLayoutManager layoutManager;
+    RecyclerAdapterCardsVisits adapter;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,12 +69,32 @@ public class VisitsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        recurs_crud.selectVisit(this, Utils.getDatabaseRefence(), obra_key);
+        receivedObra = Utils.receiveObra(getActivity().getIntent(), getContext());
+
+        if (receivedObra != null) {
+            String obra_key = receivedObra.getKey();
+            recurs_crud.selectVisit(getActivity(), Utils.getDatabaseRefence(), obra_key, adapter);
+
+        }
+
+
+
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        rv = view.findViewById(R.id.rv_visites);
+        layoutManager = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(layoutManager);
+        adapter= new RecyclerAdapterCardsVisits(getContext() ,Utils.DataCacheVisits);
+        rv.setAdapter(adapter);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_visits, container, false);
     }

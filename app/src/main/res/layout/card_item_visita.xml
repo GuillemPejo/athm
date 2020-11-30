@@ -36,7 +36,7 @@
                     app:srcCompat="@drawable/default_visit" />
 
                 <TextView
-                    android:id="@+id/referencia"
+                    android:id="@+id/data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/ombra"
@@ -74,6 +74,7 @@
                     app:srcCompat="@mipmap/ic_ramon" />
 
                 <TextView
+                    android:id="@+id/titol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -88,7 +89,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/descrip"
                 android:padding="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

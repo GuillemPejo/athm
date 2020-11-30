@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 import me.guillem.athm2app.Model.Visita;
@@ -36,7 +38,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private FirebaseCRUD recurs_crud = new FirebaseCRUD();
     private LinearLayoutManager layoutManager;
     RecyclerAdapterCardsHome adapter;
-    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,8 +64,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         rv.setAdapter(adapter);
 
         bindDades();
-        Visita v1 = new Visita("12-12-12","13:20","Ramon","Visita de façana","La infrastructura bla bla", "1");
-        mDatabaseRef.child("Obra").push().setValue(v1).
+/*        Visita v1 = new Visita("12-12-12","13:20","Ramon","Visita de façana","La infrastructura bla bla", "-MLhWL3WRTYrlOKFjNXj");
+        mDatabaseRef.child("Obra").child("-MLhWL3MOIWrlOKFjNXj").child("Visites").push().setValue(v1).
                 addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -75,9 +77,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         }
                     }
                 });
+                */
+
     }
-
-
 
 
     private void bindDades(){
