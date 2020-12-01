@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;

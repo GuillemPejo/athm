@@ -1,6 +1,7 @@
 package me.guillem.athm2app.Views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -112,6 +113,8 @@ public class DetailObra extends AppCompatActivity {
             //titol.setText(receivedObra.getTitol());
             adresa.setText(receivedObra.getAdreça());
             adresa.setText(receivedObra.getKey());
+           Log.e("MENSAJEEEEEE", String.valueOf(receivedObra.getVisita().getDescripcio()));
+
         }
 
         PagerAdapter pagerAdapter = new PageTabsAdapter(getSupportFragmentManager(),

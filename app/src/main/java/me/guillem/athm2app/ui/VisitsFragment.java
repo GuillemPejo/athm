@@ -73,7 +73,7 @@ public class VisitsFragment extends Fragment {
 
         if (receivedObra != null) {
             String obra_key = receivedObra.getKey();
-            recurs_crud.selectVisit(getActivity(), Utils.getDatabaseRefence(), obra_key, adapter);
+            //recurs_crud.selectVisit(getActivity(), Utils.getDatabaseRefence(), obra_key, adapter);
 
         }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,7 @@ public class RecyclerAdapterCardsHome extends RecyclerView.Adapter<RecyclerAdapt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         final Obra o = llistadobres.get(position);
+        //if(o.getVisita().getNom_visit()!=null){Log.e("MENSAJEEEEEE", String.valueOf(o.getAdreça()+" "+o.getVisita().getNom_visit()));}
 
         holder.adreça.setText(o.getAdreça());
         holder.tiol.setText(o.getTitol());
