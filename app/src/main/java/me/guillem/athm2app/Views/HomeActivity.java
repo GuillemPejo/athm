@@ -1,5 +1,6 @@
 package me.guillem.athm2app.Views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -52,6 +54,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
     private Animation fromBottom, rotateOpen, rotateClose, toBottom;
     private TextView tnv, tno;
+    private final Context c = HomeActivity.this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,14 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         bindDades();
 
         disableFrameLayer();
+/*
+        button_newvisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.selectObra(c);
+            }
+        });*/
+
 
 
 /*
@@ -170,6 +181,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
     public void newvisit_click(View view) {
         Toast.makeText(this, "New Visit Click", Toast.LENGTH_SHORT).show();
+        Utils.selectObra(c);
+
     }
     public void addnew_click(View view) {
 

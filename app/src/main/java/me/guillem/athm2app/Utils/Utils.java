@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.ArrayList;
@@ -89,6 +91,35 @@ public class Utils {
                     @Override
                     public void onClick(View v) {
                         activity.finish();
+                    }
+                })
+                .show();
+    }
+
+    public static void selectObra(Context c){
+
+        List<String> obres = new ArrayList<>();
+        for(Obra obra : DataCache){
+                obres.add(obra.getTitol());
+            }
+
+        ArrayAdapter<String> llistaobres = new ArrayAdapter<>(c,
+                android.R.layout.simple_list_item_1,
+                obres);
+        new LovelyChoiceDialog(c)
+                .setTopColorRes(R.color.blau)
+                .setTitle("Tria una obra")
+                .setTitleGravity(Gravity.CENTER_HORIZONTAL)
+                .setIcon(R.drawable.ic_baseline_new_obra)
+                .setMessage("Selecciona la obra a la qual vols afegir-hi una visita")
+                .setMessageGravity(Gravity.CENTER_HORIZONTAL)
+                .setItems(llistaobres, new LovelyChoiceDialog.OnItemSelectedListener<String>() {
+                    @Override
+                    public void onItemSelected(int position, String item) {
+                        //categoriatxt.setText(item);
+                        Toast.makeText(c, "Has clikao"+item, Toast.LENGTH_SHORT).show();
+                                                //intent
+                        //bundle amb item string
                     }
                 })
                 .show();
