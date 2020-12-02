@@ -6,17 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Views.HomeActivity">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_margin="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/m_add" />
-
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -35,10 +26,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:onClick="afegirDes"
             android:text="Buscar"
             tools:layout_editor_absoluteX="159dp"
-            tools:layout_editor_absoluteY="1dp"
-            android:onClick="afegirDes"/>
+            tools:layout_editor_absoluteY="1dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_cards"
@@ -47,5 +38,94 @@
 
 
     </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/shadow_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="#725C5C5C"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_add_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:backgroundTint="#3F51B5"
+        android:clickable="true"
+        android:onClick="addnew_click"
+        android:tint="@android:color/white"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/m_add" />
+
+    <TextView
+        android:id="@+id/tvvisita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/round_corner_white"
+        android:padding="8dp"
+        android:text="Nova visita"
+        android:textSize="18dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/button_new_visit"
+        app:layout_constraintEnd_toStartOf="@+id/button_new_visit"
+        app:layout_constraintTop_toTopOf="@+id/button_new_visit" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_new_obra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:backgroundTint="#FF5464C1"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="newobra_click"
+        android:tint="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/button_add_new"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_new_obra" />
+
+    <TextView
+        android:id="@+id/tvobra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:visibility="invisible"
+        android:text="Nova obra"
+        android:textSize="18dp"
+        android:padding="8dp"
+        android:background="@drawable/round_corner_white"
+        app:layout_constraintBottom_toBottomOf="@+id/button_new_obra"
+        app:layout_constraintEnd_toStartOf="@+id/button_new_obra"
+        app:layout_constraintTop_toTopOf="@+id/button_new_obra" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_new_visit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:backgroundTint="#FF5464C1"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="newvisit_click"
+        android:tint="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/button_new_obra"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_new_visit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
