@@ -20,9 +20,8 @@ public class Obra implements Serializable {
     double lat;
     double lng;
     String key;
-    Visita visita;
 
-    public Obra(String adreça, String titol, String ref, String estat, String tecnic, String tip_p, String data_inici, String data_final, String prorroga, String caduc_permis, double lat, double lng, String key, Visita visita) {
+    public Obra(String adreça, String titol, String ref, String estat, String tecnic, String tip_p, String data_inici, String data_final, String prorroga, String caduc_permis, double lat, double lng, String key) {
         this.adreça = adreça;
         this.titol = titol;
         this.ref = ref;
@@ -35,7 +34,6 @@ public class Obra implements Serializable {
         this.caduc_permis = caduc_permis;
         this.lat = lat;
         this.lng = lng;
-        this.visita = visita;
         this.key = key;
     }
 
@@ -49,10 +47,6 @@ public class Obra implements Serializable {
     public void setAdreça(String adreça) {
         this.adreça = adreça;
     }
-
-    public Visita getVisita() {return visita;}
-
-    public void setVisita(Visita visita) { this.visita = visita; }
 
     public String getTitol() {
         return titol;

@@ -15,8 +15,11 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import me.guillem.athm2app.Model.Obra;
+import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
+import me.guillem.athm2app.Model.RecyclerAdapterCardsVisits;
 import me.guillem.athm2app.PageTabsAdapter;
 import me.guillem.athm2app.R;
+import me.guillem.athm2app.Utils.FirebaseCRUD;
 import me.guillem.athm2app.Utils.Utils;
 
 public class DetailObra extends AppCompatActivity {
@@ -25,12 +28,16 @@ public class DetailObra extends AppCompatActivity {
     TextView titol, adresa;
     ViewPager viewPager;
     TabLayout tabs;
+    private FirebaseCRUD recurs_crud = new FirebaseCRUD();
+    RecyclerAdapterCardsVisits adapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_obra);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 /*        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_chevron_left_24);
@@ -113,7 +120,8 @@ public class DetailObra extends AppCompatActivity {
             //titol.setText(receivedObra.getTitol());
             adresa.setText(receivedObra.getAdreça());
             adresa.setText(receivedObra.getKey());
-           Log.e("MENSAJEEEEEE", String.valueOf(receivedObra.getVisita().getDescripcio()));
+
+            //Log.e("MENSAJEEEEEE", String.valueOf(receivedObra.getVisita().getDescripcio()));
 
         }
 

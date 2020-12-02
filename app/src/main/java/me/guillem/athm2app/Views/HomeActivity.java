@@ -65,8 +65,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         rv.setAdapter(adapter);
 
         bindDades();
-/*        Visita v1 = new Visita("12-12-12","13:20","Ramon","Visita de façana","La infrastructura bla bla", "-MLhWL3WRTYrlOKFjNXj");
-        mDatabaseRef.child("Obra").child("-MLhWL3MOIWrlOKFjNXj").child("Visites").push().setValue(v1).
+/*
+        Visita v1 = new Visita("12-12-12","13:20","Ramon","Restauracio de pis","La infrastructura bla bla", "-MLhWLAAAAArlOKFjNXj");
+        mDatabaseRef.child("Visita").child("-MLhwvv4r32r313D8gsh").push().setValue(v1).
                 addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -78,9 +79,10 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         }
                     }
                 });
-                */
 
+*/
     }
+
 
 
     private void bindDades(){
@@ -112,6 +114,11 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        bindDades();
     }
 
     @Override

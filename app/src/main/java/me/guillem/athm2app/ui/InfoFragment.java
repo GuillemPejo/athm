@@ -56,11 +56,47 @@ public class InfoFragment extends Fragment {
         FrameLayout timeline = (FrameLayout) v.findViewById(R.id.barra);
 
         receiveAndShowData();
+        timeBarManager();
 
         //Bundle b3 = getArguments();
         //Obra obra = (Obra) b3.getSerializable("key");
                 // Inflate the layout for this fragment
         return v;
+    }
+
+    private void timeBarManager(){
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate dinici = LocalDate.parse(receivedObra.getData_inici(), dtf);
+        LocalDate dfinal = LocalDate.parse(receivedObra.getData_final(), dtf);
+        LocalDate today = LocalDate.now();
+
+
+        if (dfinal.isBefore(today)){
+            System.out.println("Entra");
+            ObjectAnimator animation = ObjectAnimator.ofFloat(aniView, "translationY", 800);
+            animation.setDuration(2000);
+            animation.start();
+        }
+
+        if(dinici.isAfter(today)){
+            ObjectAnimator animation = ObjectAnimator.ofFloat(aniView, "translationY", 0);
+            animation.setDuration(2000);
+            animation.start();
+        }
+
+        if(dinici.isBefore(today) && dfinal.isAfter(today)){
+            long duracio_obra = ChronoUnit.DAYS.between(dinici, dfinal);
+            System.out.println("Days: " + duracio_obra);
+            long dia_avui = ChronoUnit.DAYS.between(dinici, today);
+            System.out.println("Days: " + dia_avui);
+            long posicio = (800 / duracio_obra) * dia_avui;
+            System.out.println("posicio: " + posicio);
+            ObjectAnimator animation = ObjectAnimator.ofFloat(aniView, "translationY", posicio);
+            animation.setDuration(2000);
+            animation.start();
+        }
+
     }
 
     private void receiveAndShowData() {
@@ -75,19 +111,10 @@ public class InfoFragment extends Fragment {
             dini.setText(receivedObra.getData_inici());
             dfin.setText(receivedObra.getData_final());
 
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate date1 = LocalDate.parse(receivedObra.getData_inici(), dtf);
-            LocalDate date2 = LocalDate.parse(receivedObra.getData_final(), dtf);
-            long duracio_obra = ChronoUnit.DAYS.between(date1, date2);
-            //System.out.println("Days: " + duracio_obra);
-            LocalDate today = LocalDate.now();
-            long dia_avui = ChronoUnit.DAYS.between(date1, today);
-            //System.out.println("Days: " + dia_avui);
-            long posicio = (320 / duracio_obra) * dia_avui;
-            //System.out.println("posicio: " + posicio);
-            ObjectAnimator animation = ObjectAnimator.ofFloat(aniView, "translationY", posicio);
-            animation.setDuration(2000);
-            animation.start();
+
+
+
+
         }
     }
 }

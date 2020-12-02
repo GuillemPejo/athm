@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsVisits;
+import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.FirebaseCRUD;
 import me.guillem.athm2app.Utils.Utils;
@@ -69,13 +70,7 @@ public class VisitsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        receivedObra = Utils.receiveObra(getActivity().getIntent(), getContext());
 
-        if (receivedObra != null) {
-            String obra_key = receivedObra.getKey();
-            //recurs_crud.selectVisit(getActivity(), Utils.getDatabaseRefence(), obra_key, adapter);
-
-        }
 
 
 
@@ -83,12 +78,22 @@ public class VisitsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rv = view.findViewById(R.id.rv_visites);
-        layoutManager = new LinearLayoutManager(getContext());
-        rv.setLayoutManager(layoutManager);
-        adapter= new RecyclerAdapterCardsVisits(getContext() ,Utils.DataCacheVisits);
-        rv.setAdapter(adapter);
+        receivedObra = null;
+        receivedObra = Utils.receiveObra(getActivity().getIntent(), getContext());
 
+
+        if (receivedObra != null) {
+            String obra_key = receivedObra.getKey();
+
+            rv = view.findViewById(R.id.rv_visites);
+            layoutManager = new LinearLayoutManager(getContext());
+            rv.setLayoutManager(layoutManager);
+            adapter= new RecyclerAdapterCardsVisits(getContext() ,Utils.DataCacheVisits);
+            rv.setAdapter(adapter);
+            recurs_crud.selectVisit(getActivity(),Utils.getDatabaseRefence(),receivedObra.getKey(),rv,adapter);
+
+
+        }
     }
 
     @Override

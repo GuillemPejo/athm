@@ -5,12 +5,12 @@ import java.util.Date;
 
 public class Visita {
 
-    String key;
     String data_visita;
     String hora_visita;
     String responsable;
     String nom_visit;
     String descripcio;
+    String key;
     //ArrayList<String> media = new ArrayList<String>();
 
     public Visita(String data_visita, String hora_visita, String responsable, String nom_visit, String descripcio, String key) {
@@ -19,8 +19,8 @@ public class Visita {
         this.responsable = responsable;
         this.nom_visit = nom_visit;
         this.descripcio = descripcio;
-        //this.media = media;
         this.key = key;
+        //this.media = media;
     }
     public Visita(){
 
@@ -67,6 +67,15 @@ public class Visita {
         this.descripcio = descripcio;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+
 /*    public ArrayList<String> getMedia() {
         return media;
     }
@@ -76,11 +85,4 @@ public class Visita {
     }*/
 
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getKey() {
-        return key;
-    }
 }

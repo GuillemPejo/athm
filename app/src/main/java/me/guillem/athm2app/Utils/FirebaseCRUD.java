@@ -66,11 +66,7 @@ public class FirebaseCRUD {
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         Obra obra = ds.getValue(Obra.class);
-                        //obra.setNom(String.valueOf(ds.child("Visites").getValue()));
                         obra.setKey(ds.getKey());
-                        //Getting User object from dataSnapshot
-                        String adreça  = obra.getAdreça();
-                        String nom_visit = obra.getVisita().getNom_visit();
                         DataCache.add(obra);
                     }
 
@@ -84,7 +80,7 @@ public class FirebaseCRUD {
                         }
                     });
                 }else {
-                    Utils.show(a,"No s'han trobat nous items");
+                    Utils.show(a,"No s'han trobat nous iteeeeems");
                 }
             }
             @Override
@@ -96,20 +92,24 @@ public class FirebaseCRUD {
         });
     }
 
-/*
-    public void selectVisit(final FragmentActivity a, DatabaseReference db, String obra_key, final RecyclerAdapterCardsVisits adapter) {
+
+    public void selectVisit(final FragmentActivity a, DatabaseReference db, String obra_key, final RecyclerView rv, final RecyclerAdapterCardsVisits adapter) {
         //Utils.showProgressBar(pb);
 
-        db.child("Obra").child(obra_key).child("Visites").addValueEventListener(new ValueEventListener() {
+        db.child("Visita").child(obra_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataCacheVisits.clear();
-                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 1) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        System.out.println(ds.getKey());
-                        //Visita visita = ds.getValue(Visita.class);
-                        //visita.setKey(ds.getKey());
-                        //DataCacheVisits.add(visita);
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+
+                    if(dataSnapshot.getKey().equals(obra_key)){
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            //System.out.println(ds.getKey());
+
+                            Visita visita = ds.getValue(Visita.class);
+                            visita.setKey(ds.getKey());
+                            DataCacheVisits.add(visita);
+                        }
                     }
 
                     adapter.notifyDataSetChanged();
@@ -119,12 +119,13 @@ public class FirebaseCRUD {
                         public void run() {
                             //System.out.println("DADEEEES: "+DataCacheVisits.get(0).getNom_visit());
                             //Utils.hideProgressBar(pb);
-                            //rv.smoothScrollToPosition(DataCacheVisits.size());
-
+                            rv.smoothScrollToPosition(DataCacheVisits.size());
                         }
                     });
                 }else {
                     Utils.show(a,"No s'han trobat nous items");
+
+
                 }
             }
             @Override
@@ -135,7 +136,7 @@ public class FirebaseCRUD {
             }
         });
     }
-*/
+
 
     public void update(final AppCompatActivity a,final DatabaseReference mDatabaseRef, final ProgressBar pb, final Obra updatedObra) {
 
