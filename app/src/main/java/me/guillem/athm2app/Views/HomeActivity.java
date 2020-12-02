@@ -182,7 +182,6 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     public void newvisit_click(View view) {
         Toast.makeText(this, "New Visit Click", Toast.LENGTH_SHORT).show();
         Utils.selectObra(c);
-
     }
     public void addnew_click(View view) {
 

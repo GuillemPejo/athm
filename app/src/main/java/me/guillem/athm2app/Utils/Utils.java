@@ -23,6 +23,7 @@ import me.guillem.athm2app.MainActivity;
 import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;
+import me.guillem.athm2app.Views.CRUDVisits;
 
 public class Utils {
     public static List<Obra> DataCache =new ArrayList<>();
@@ -118,6 +119,10 @@ public class Utils {
                     public void onItemSelected(int position, String item) {
                         //categoriatxt.setText(item);
                         Toast.makeText(c, "Has clikao"+item, Toast.LENGTH_SHORT).show();
+
+                        Intent i = new Intent(c, CRUDVisits.class);
+                        i.putExtra("Obra", item);
+                        c.startActivity(i);
                                                 //intent
                         //bundle amb item string
                     }
