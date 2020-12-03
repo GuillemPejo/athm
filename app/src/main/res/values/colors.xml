@@ -9,6 +9,7 @@
     <color name="black">#FFFFFFFF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gris">#EDEDED</color>
+    <color name="negre">#FF000000</color>
     <color name="tronja">#FFC107</color>
     <color name="textos_sec">#8E8E8E</color>
     <color name="location">#8BC34A</color>

@@ -3,12 +3,10 @@ package me.guillem.athm2app.Views;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -17,25 +15,17 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
-import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.FirebaseCRUD;
 import me.guillem.athm2app.Utils.Utils;
@@ -146,7 +136,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new:
-                Utils.sendObraToActivity(this,null,CRUDActivity.class);
+                Utils.sendObraToActivity(this,null, CRUDObras.class);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -29,29 +29,129 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="Titol de la visita" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:drawableLeft="@drawable/ic_baseline_new_obra"
+                android:drawableTint="@color/negre"
+                android:drawablePadding="5dp"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="Nom de la visita" />
 
             <TextView
                 android:id="@+id/textView3"
+                android:paddingTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="Responsable d'obra" />
 
             <EditText
                 android:id="@+id/obra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:drawableLeft="@drawable/ic_baseline_person_24"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/negre"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="Nom del responsable" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/Data"
+                    android:paddingTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Data"
+                    app:layout_constraintEnd_toEndOf="@+id/pickdata"
+                    app:layout_constraintStart_toStartOf="@+id/pickdata"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/pickdata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                    android:drawablePadding="5dp"
+                    android:drawableTint="@color/negre"
+                    android:focusable="false"
+                    android:hint="Escull una data"
+                    android:inputType="date"
+                    android:maxLines="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/Data" />
+
+                <TextView
+                    android:id="@+id/Time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:text="Hora"
+                    app:layout_constraintEnd_toEndOf="@+id/picktime"
+                    app:layout_constraintStart_toStartOf="@+id/picktime"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/picktime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_baseline_access_time_24"
+                    android:drawablePadding="5dp"
+                    android:drawableTint="@color/negre"
+                    android:focusable="false"
+                    android:hint="Escull una hora"
+                    android:inputType="date"
+                    android:maxLines="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/Time" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:paddingTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Descripció de l'obra"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pickdata" />
+
+                <EditText
+                    android:id="@+id/descripcion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:drawableLeft="@drawable/ic_baseline_description_24"
+                    android:drawablePadding="5dp"
+                    android:drawableTint="@color/negre"
+                    android:ems="10"
+                    android:hint="Descripció"
+                    android:inputType="textMultiLine"
+                    app:layout_constraintEnd_toStartOf="@+id/mic_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                <ImageButton
+                    android:id="@+id/mic_button"
+                    android:layout_width="40dp"
+                    android:backgroundTint="@color/blau"
+                    android:background="@drawable/rounded_corner_grey"
+                    android:layout_height="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/descripcion"
+
+                    app:srcCompat="@drawable/ic_baseline_keyboard_voice_24" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
