@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -16,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -35,8 +38,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.DatePickerFragment;
@@ -50,9 +58,17 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     public static final Integer RecordAudioRequestCode = 1;
     private SpeechRecognizer speechRecognizer;
     private ImageButton micButton;
-    private Animation mic_in, mic_out;
-    TextView t;
-    EditText pickdata, picktime, descripcion;
+    private Animation mic_in, mic_out, bilink;
+    ImageView icon_recording;
+    EditText pickdata, picktime, descripcion, timer;
+
+    private Handler handler;
+
+    private int audioTotalTime;
+    private TimerTask timerTask;
+    private Timer audioTimer;
+    private SimpleDateFormat timeFormatter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +79,11 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         }
         descripcion = findViewById(R.id.descripcion);
         micButton = findViewById(R.id.mic_button);
-        
+        timer = findViewById(R.id.anim_mic);
+        icon_recording = findViewById(R.id.icon_recording);
+
+
+
         voicerecognizr();
 
 
@@ -95,13 +115,21 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         mic_in = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.mic_to_click_button);
         mic_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_close_button);
+        bilink = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bilink);
+        timeFormatter = new SimpleDateFormat("m:ss", Locale.getDefault());
+
+
 
 
         final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        handler = new Handler(Looper.getMainLooper());
+
 
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            String text = String.valueOf(descripcion.getText());
+
             @Override
             public void onReadyForSpeech(Bundle bundle) {
 
@@ -109,6 +137,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
 
             @Override
             public void onBeginningOfSpeech() {
+                text = String.valueOf(descripcion.getText());
                 descripcion.setText("");
                 descripcion.setHint("Listening...");
             }
@@ -131,7 +160,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onError(int i) {
                 Toast.makeText(CRUDVisits.this, "Sisusplau, mantingui premut el botó", Toast.LENGTH_SHORT).show();
-                descripcion.setText("");
 
             }
 
@@ -139,8 +167,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             public void onResults(Bundle bundle) {
                 //micButton.setImageResource(R.drawable.ic_mic_black_off);
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                String text = String.valueOf(descripcion.getText());
-                descripcion.setText(text + data.get(0));
+                descripcion.setText(text +" "+ data.get(0));
             }
 
             @Override
@@ -158,14 +185,43 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    micButton.animate().scaleX(1f).scaleY(1f).translationX(0).translationY(0).setDuration(100).setInterpolator(new LinearInterpolator()).start();
                     speechRecognizer.stopListening();
+                    timer.setVisibility(View.GONE);
+                    icon_recording.setVisibility(View.GONE);
+                    descripcion.setVisibility(View.VISIBLE);
+                    micButton.animate().scaleX(1f).scaleY(1f).translationX(0).translationY(0).setDuration(100).setInterpolator(new LinearInterpolator()).start();
+                    icon_recording.clearAnimation();
+                    timerTask.cancel();
 
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
                     speechRecognizer.startListening(speechRecognizerIntent);
-                    micButton.animate().scaleXBy(1f).scaleYBy(1f).setDuration(200).setInterpolator(new OvershootInterpolator()).start();
+                    icon_recording.setVisibility(View.VISIBLE);
+                    timer.setVisibility(View.VISIBLE);
+                    descripcion.setVisibility(View.INVISIBLE);
+                    micButton.animate().scaleXBy(1f).scaleYBy(1f).translationX(-50).translationY(-20).setDuration(200).setInterpolator(new LinearInterpolator()).start();
+                    icon_recording.startAnimation(bilink);
 
+                    if (audioTimer == null) {
+                        audioTimer = new Timer();
+                        timeFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    }
+
+                    timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    timer.setText(timeFormatter.format(new Date(audioTotalTime * 1000)));
+                                    audioTotalTime++;
+                                }
+                            });
+                        }
+                    };
+
+                    audioTotalTime = 0;
+                    audioTimer.schedule(timerTask, 0, 1000);
 
                 }
                 return false;

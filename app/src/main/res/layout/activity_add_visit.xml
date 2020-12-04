@@ -8,151 +8,184 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/titol_obra"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Titol"
-                android:textSize="20dp"
-                android:padding="20dp"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Titol de la visita" />
-
-            <EditText
-                android:id="@+id/editTextTextPersonName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:drawableLeft="@drawable/ic_baseline_new_obra"
-                android:drawableTint="@color/negre"
-                android:drawablePadding="5dp"
-                android:inputType="textPersonName"
-                android:hint="Nom de la visita" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:paddingTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Responsable d'obra" />
-
-            <EditText
-                android:id="@+id/obra"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:drawableLeft="@drawable/ic_baseline_person_24"
-                android:drawablePadding="5dp"
-                android:drawableTint="@color/negre"
-                android:inputType="textPersonName"
-                android:hint="Nom del responsable" />
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/Data"
-                    android:paddingTop="20dp"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/titol_obra"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Data"
-                    app:layout_constraintEnd_toEndOf="@+id/pickdata"
-                    app:layout_constraintStart_toStartOf="@+id/pickdata"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/pickdata"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/negre"
-                    android:focusable="false"
-                    android:hint="Escull una data"
-                    android:inputType="date"
-                    android:maxLines="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/Data" />
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:text="Titol"
+                    android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/Time"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="20dp"
-                    android:text="Hora"
-                    app:layout_constraintEnd_toEndOf="@+id/picktime"
-                    app:layout_constraintStart_toStartOf="@+id/picktime"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:text="Titol de la visita" />
 
                 <EditText
-                    android:id="@+id/picktime"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/editTextTextPersonName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:drawableLeft="@drawable/ic_baseline_access_time_24"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/negre"
-                    android:focusable="false"
-                    android:hint="Escull una hora"
-                    android:inputType="date"
-                    android:maxLines="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/Time" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:paddingTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Descripció de l'obra"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pickdata" />
-
-                <EditText
-                    android:id="@+id/descripcion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:drawableLeft="@drawable/ic_baseline_description_24"
+                    android:drawableLeft="@drawable/ic_baseline_new_obra"
                     android:drawablePadding="5dp"
                     android:drawableTint="@color/negre"
                     android:ems="10"
-                    android:hint="Descripció"
-                    android:inputType="textMultiLine"
-                    app:layout_constraintEnd_toStartOf="@+id/mic_button"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    android:hint="Nom de la visita"
+                    android:inputType="textPersonName" />
 
-                <ImageButton
-                    android:id="@+id/mic_button"
-                    android:layout_width="40dp"
-                    android:backgroundTint="@color/blau"
-                    android:background="@drawable/rounded_corner_grey"
-                    android:layout_height="40dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/descripcion"
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:text="Responsable d'obra" />
 
-                    app:srcCompat="@drawable/ic_baseline_keyboard_voice_24" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/obra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_baseline_person_24"
+                    android:drawablePadding="5dp"
+                    android:drawableTint="@color/negre"
+                    android:ems="10"
+                    android:hint="Nom del responsable"
+                    android:inputType="textPersonName" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/icon_recording"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/anim_mic"
+                        app:srcCompat="@drawable/ic_baseline_keyboard_voice_24"
+                        app:tint="@android:color/holo_red_dark" />
+
+                    <EditText
+                        android:id="@+id/anim_mic"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="00:00"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/mic_button"
+                        app:layout_constraintEnd_toStartOf="@+id/mic_button"
+                        app:layout_constraintStart_toEndOf="@+id/icon_recording"
+                        app:layout_constraintTop_toTopOf="@+id/mic_button" />
+
+                    <TextView
+                        android:id="@+id/Data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Data"
+                        app:layout_constraintEnd_toEndOf="@+id/pickdata"
+                        app:layout_constraintStart_toStartOf="@+id/pickdata"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/pickdata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:drawablePadding="5dp"
+                        android:drawableTint="@color/negre"
+                        android:focusable="false"
+                        android:hint="Escull una data"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Data" />
+
+                    <TextView
+                        android:id="@+id/Time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hora"
+                        app:layout_constraintEnd_toEndOf="@+id/picktime"
+                        app:layout_constraintStart_toStartOf="@+id/picktime"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/picktime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/ic_baseline_access_time_24"
+                        android:drawablePadding="5dp"
+                        android:drawableTint="@color/negre"
+                        android:focusable="false"
+                        android:hint="Escull una hora"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Time" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:text="Descripció de l'obra"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pickdata" />
+
+                    <EditText
+                        android:id="@+id/descripcion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:drawableLeft="@drawable/ic_baseline_description_24"
+                        android:drawablePadding="5dp"
+                        android:drawableTint="@color/negre"
+                        android:ems="10"
+                        android:hint="Descripció"
+                        android:inputType="textMultiLine"
+                        app:layout_constraintEnd_toStartOf="@+id/mic_button"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                    <ImageButton
+                        android:id="@+id/mic_button"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/rounded_corner_grey"
+                        android:backgroundTint="@color/blau"
+                        app:layout_constraintBottom_toBottomOf="@+id/descripcion"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/descripcion"
+                        app:srcCompat="@drawable/ic_baseline_keyboard_voice_24" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
 
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

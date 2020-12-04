@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
-        <translate
-            android:duration="600"
-            android:fromYDelta="-2%p"
-            android:interpolator="@android:anim/bounce_interpolator"
-            android:repeatCount="infinite"
-            android:repeatMode="reverse"
-            android:toYDelta="2%p" />
+        <scale
+            android:duration="100"
+            android:interpolator="@android:anim/linear_interpolator"
+            android:fromXScale="2.0"
+            android:fromYScale="2.0"
+            android:pivotX="100%"
+            android:pivotY="100%"
+            android:toXScale="2.0"
+            android:toYScale="2.0" />
+
+        //micButton.animate().scaleX(1f).scaleY(1f).translationX(0).translationY(0).setDuration(100).setInterpolator(new LinearInterpolator()).start();
+
 </set>
