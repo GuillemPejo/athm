@@ -13,10 +13,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,12 +74,12 @@
 
                     <ImageView
                         android:id="@+id/icon_recording"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/descripcion"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/anim_mic"
+                        app:layout_constraintTop_toTopOf="@+id/descripcion"
                         app:srcCompat="@drawable/ic_baseline_keyboard_voice_24"
                         app:tint="@android:color/holo_red_dark" />
 
@@ -178,13 +178,42 @@
                         app:layout_constraintTop_toTopOf="@+id/descripcion"
                         app:srcCompat="@drawable/ic_baseline_keyboard_voice_24" />
 
+                    <Button
+                        android:id="@+id/takephoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="FER FOTO"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/descripcion" />
+
+                    <Button
+                        android:id="@+id/gogallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="20dp"
+                        android:text="GALERIA"
+                        app:layout_constraintBottom_toBottomOf="@+id/takephoto"
+                        app:layout_constraintStart_toEndOf="@+id/takephoto"
+                        app:layout_constraintTop_toTopOf="@+id/takephoto"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/gogallery" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
-
-
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.cardview.widget.CardView>
 

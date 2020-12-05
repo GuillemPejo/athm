@@ -14,6 +14,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,32 +39,63 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.guillem.athm2app.image_viewer.ChooserType;
+import me.guillem.athm2app.image_viewer.ImageViewAdapter;
+import me.guillem.athm2app.image_viewer.MediaFile;
+import me.guillem.athm2app.image_viewer.MediaSource;
+
+
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.DatePickerFragment;
 import me.guillem.athm2app.Utils.TimePickerFragment;
+import me.guillem.athm2app.image_viewer.EasyImage;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
 
 /**
  * * Created by Guillem on 02/12/20.
  */
 public class CRUDVisits extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String PHOTOS_KEY = "LIST_IMAGE";
+    private static final int CHOOSER_PERMISSIONS_REQUEST_CODE = 7459;
+    private static final int CAMERA_REQUEST_CODE = 7500;
+    private static final int CAMERA_VIDEO_REQUEST_CODE = 7501;
+    private static final int GALLERY_REQUEST_CODE = 7502;
+    private static final int DOCUMENTS_REQUEST_CODE = 7503;
+
     public static final Integer RecordAudioRequestCode = 1;
     private SpeechRecognizer speechRecognizer;
     private ImageButton micButton;
     private Animation mic_in, mic_out, bilink;
     ImageView icon_recording;
+    Button gogallery, takephoto;
     EditText pickdata, picktime, descripcion, timer;
 
     private Handler handler;
+    private EasyImage easyImage;
+
+    protected RecyclerView recyclerView;
+
+    protected View galleryButton;
+
+    private ImageViewAdapter imagesAdapter;
+
+    private ArrayList<MediaFile> photos = new ArrayList<>();
+
 
     private int audioTotalTime;
     private TimerTask timerTask;
@@ -82,10 +115,28 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         timer = findViewById(R.id.anim_mic);
         icon_recording = findViewById(R.id.icon_recording);
 
-
+        recyclerView = findViewById(R.id.rv_images);
 
         voicerecognizr();
 
+        if (savedInstanceState != null) {
+            photos = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
+        }
+
+        imagesAdapter = new ImageViewAdapter(this, photos);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView.setHasFixedSize(true);
+        //recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(imagesAdapter);
+
+        easyImage = new EasyImage.Builder(this)
+                .setChooserTitle("Pick media")
+                .setCopyImagesToPublicGalleryFolder(false)
+//                .setChooserType(ChooserType.CAMERA_AND_DOCUMENTS)
+                .setChooserType(ChooserType.CAMERA_AND_GALLERY)
+                .setFolderName("EasyImage sample")
+                .allowMultiple(true)
+                .build();
 
 
         Bundle extras = getIntent().getExtras();
@@ -108,6 +159,11 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         pickdata.setOnClickListener(this);
         picktime = findViewById(R.id.picktime);
         picktime.setOnClickListener(this);
+
+        gogallery = findViewById(R.id.gogallery);
+        gogallery.setOnClickListener(this);
+        takephoto = findViewById(R.id.takephoto);
+        takephoto.setOnClickListener(this);
 
     }
 
@@ -139,7 +195,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             public void onBeginningOfSpeech() {
                 text = String.valueOf(descripcion.getText());
                 descripcion.setText("");
-                descripcion.setHint("Listening...");
+                descripcion.setHint("Espera un moment...");
             }
 
             @Override
@@ -239,10 +295,103 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             case R.id.picktime:
                 showTimePickerDialog();
                 break;
+            case R.id.takephoto:
+                takephoto();
+                break;
+            case R.id.gogallery:
+                gogallery();
+                break;
         }
     }
 
+    private void takephoto() {
+        String[] necessaryPermissions = new String[]{Manifest.permission.CAMERA};
+        if (arePermissionsGranted(necessaryPermissions)) {
+            Log.e("EEERROR","Entra");
+            easyImage.openCameraForImage(CRUDVisits.this);
+        } else {
+            Log.e("EEERROR","BAD ENTRY");
+            requestPermissionsCompat(necessaryPermissions, CAMERA_REQUEST_CODE);
+        }
+    }
 
+    private void gogallery() {
+        String[] necessaryPermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (arePermissionsGranted(necessaryPermissions)) {
+            easyImage.openGallery(CRUDVisits.this);
+        } else {
+            requestPermissionsCompat(necessaryPermissions, GALLERY_REQUEST_CODE);
+        }
+    }
+
+    private void onPhotosReturned(@NonNull MediaFile[] returnedPhotos) {
+        photos.addAll(Arrays.asList(returnedPhotos));
+        imagesAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(photos.size() - 1);
+    }
+
+    private boolean arePermissionsGranted(String[] permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)
+                return false;
+
+        }
+        return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(PHOTOS_KEY, photos);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == CHOOSER_PERMISSIONS_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            easyImage.openChooser(CRUDVisits.this);
+        } else if (requestCode == CAMERA_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            easyImage.openCameraForImage(CRUDVisits.this);
+        } else if (requestCode == CAMERA_VIDEO_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            easyImage.openCameraForVideo(CRUDVisits.this);
+        } else if (requestCode == GALLERY_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            easyImage.openGallery(CRUDVisits.this);
+        } else if (requestCode == DOCUMENTS_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            easyImage.openDocuments(CRUDVisits.this);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        easyImage.handleActivityResult(requestCode, resultCode, data, this, new EasyImage.Callbacks() {
+            @Override
+            public void onMediaFilesPicked(MediaFile[] imageFiles, MediaSource source) {
+                for (MediaFile imageFile : imageFiles) {
+                    Log.d("EasyImage", "Image file returned: " + imageFile.getFile().toString());
+                }
+                onPhotosReturned(imageFiles);
+            }
+
+            @Override
+            public void onImagePickerError(@NonNull Throwable error, @NonNull MediaSource source) {
+                //Some error handling
+                error.printStackTrace();
+            }
+
+            @Override
+            public void onCanceled(@NonNull MediaSource source) {
+                //Not necessary to remove any files manually anymore
+            }
+        });
+    }
+
+
+    private void requestPermissionsCompat(String[] permissions, int requestCode) {
+        ActivityCompat.requestPermissions(CRUDVisits.this, permissions, requestCode);
+    }
 
     private void showDatePickerDialog() {
         DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
@@ -280,15 +429,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},RecordAudioRequestCode);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RecordAudioRequestCode && grantResults.length > 0 ){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                Toast.makeText(this,"Permission Granted", Toast.LENGTH_SHORT).show();
         }
     }
 
