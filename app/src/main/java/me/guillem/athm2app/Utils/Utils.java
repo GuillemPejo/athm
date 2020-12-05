@@ -100,8 +100,11 @@ public class Utils {
     public static void selectObra(Context c){
 
         List<String> obres = new ArrayList<>();
+        List<String> ids = new ArrayList<>();
+
         for(Obra obra : DataCache){
                 obres.add(obra.getTitol());
+                ids.add(obra.getKey());
             }
 
         ArrayAdapter<String> llistaobres = new ArrayAdapter<>(c,
@@ -122,6 +125,7 @@ public class Utils {
 
                         Intent i = new Intent(c, CRUDVisits.class);
                         i.putExtra("Obra", item);
+                        i.putExtra("ids", ids.get(position));
                         c.startActivity(i);
                                                 //intent
                         //bundle amb item string

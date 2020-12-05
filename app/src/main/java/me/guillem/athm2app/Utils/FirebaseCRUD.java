@@ -56,6 +56,33 @@ public class FirebaseCRUD {
         }
     }
 
+    public void insertVisit(final AppCompatActivity a, final DatabaseReference mDatabaseRef, final ProgressBar pb, final Visita visita, String id) {
+        //Comprova que passis un Comerç vàlid. Si no, retorna false.
+        if (visita == null) {
+            Utils.showInfoDialog(a,"HA FALLAT LA VALIDACIÓ","Obra és null");
+            return;
+        } else {
+            //En cas contrari, s'intenta desar les dades a la realtime database de Firebase
+            Utils.showProgressBar(pb);
+
+            mDatabaseRef.child("Visita").child(id).push().setValue(visita).
+                    addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Utils.hideProgressBar(pb);
+
+                            if(task.isSuccessful()){
+                                //Utils.openActivity(a, ComercosActivity.class);
+                                Utils.show(a,"Felicitats! S'ha afegit correctament");
+                            }else{
+                                Utils.showInfoDialog(a,"Opss.. Alguna cosa ha anat malament",task.getException().
+                                        getMessage());
+                            }
+                        }
+                    });
+        }
+    }
+
     public void select(final AppCompatActivity a, DatabaseReference db, final ProgressBar pb, final RecyclerView rv, final RecyclerAdapterCardsHome adapter) {
         Utils.showProgressBar(pb);
 

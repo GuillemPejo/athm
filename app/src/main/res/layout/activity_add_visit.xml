@@ -24,6 +24,15 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+                <ProgressBar
+                    android:id="@+id/mProgressBarSave"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:indeterminate="true"
+                    android:indeterminateBehavior="cycle"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/titol_obra"
                     android:layout_width="match_parent"
@@ -40,7 +49,7 @@
                     android:text="Titol de la visita" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/nom_visita"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_new_obra"
@@ -58,7 +67,7 @@
                     android:text="Responsable d'obra" />
 
                 <EditText
-                    android:id="@+id/obra"
+                    android:id="@+id/nom_respo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
@@ -211,6 +220,13 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="SAVE DATA" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

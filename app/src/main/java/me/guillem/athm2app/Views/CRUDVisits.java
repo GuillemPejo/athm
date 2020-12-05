@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -42,6 +43,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +56,9 @@ import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.guillem.athm2app.Model.Visita;
+import me.guillem.athm2app.Utils.FirebaseCRUD;
+import me.guillem.athm2app.Utils.Utils;
 import me.guillem.athm2app.image_viewer.ChooserType;
 import me.guillem.athm2app.image_viewer.ImageViewAdapter;
 import me.guillem.athm2app.image_viewer.MediaFile;
@@ -77,13 +83,17 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     private static final int GALLERY_REQUEST_CODE = 7502;
     private static final int DOCUMENTS_REQUEST_CODE = 7503;
 
+    private FirebaseCRUD crudHelper = new FirebaseCRUD();
+    private DatabaseReference db = Utils.getDatabaseRefence();
+
     public static final Integer RecordAudioRequestCode = 1;
     private SpeechRecognizer speechRecognizer;
     private ImageButton micButton;
     private Animation mic_in, mic_out, bilink;
     ImageView icon_recording;
-    Button gogallery, takephoto;
-    EditText pickdata, picktime, descripcion, timer;
+    Button gogallery, takephoto, save;
+    EditText pickdata, picktime, timer;
+    EditText nom_visita, nom_respo, descripcion;
 
     private Handler handler;
     private EasyImage easyImage;
@@ -102,6 +112,11 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     private Timer audioTimer;
     private SimpleDateFormat timeFormatter;
 
+    private ProgressBar mprogressBar;
+    String ids;
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,10 +125,31 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
             checkPermission();
         }
+        Bundle extras = getIntent().getExtras();
+        String title= extras.getString("Obra");
+        ids = extras.getString("ids");
+
         descripcion = findViewById(R.id.descripcion);
+        nom_visita = findViewById(R.id.nom_visita);
+        nom_respo = findViewById(R.id.nom_respo);
         micButton = findViewById(R.id.mic_button);
         timer = findViewById(R.id.anim_mic);
         icon_recording = findViewById(R.id.icon_recording);
+
+        mprogressBar = findViewById(R.id.mProgressBarSave);
+
+        pickdata = findViewById(R.id.pickdata);
+        pickdata.setOnClickListener(this);
+        picktime = findViewById(R.id.picktime);
+        picktime.setOnClickListener(this);
+
+        gogallery = findViewById(R.id.gogallery);
+        gogallery.setOnClickListener(this);
+        takephoto = findViewById(R.id.takephoto);
+        takephoto.setOnClickListener(this);
+
+        save = findViewById(R.id.save);
+        save.setOnClickListener(this);
 
         recyclerView = findViewById(R.id.rv_images);
 
@@ -139,31 +175,12 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
                 .build();
 
 
-        Bundle extras = getIntent().getExtras();
+
+
         if (extras != null) {
-            String title= extras.getString("Obra");
             TextView t1 = findViewById(R.id.titol_obra);
-            t1.setText("Nova visita a l'obra "+title);
-
-
-            String data_visita;
-            String hora_visita;
-            String responsable;
-            String nom_visit;
-            String descripcio;
-            String key;
+            t1.setText("Nova visita a l'obra "+ title);
         }
-
-
-        pickdata = findViewById(R.id.pickdata);
-        pickdata.setOnClickListener(this);
-        picktime = findViewById(R.id.picktime);
-        picktime.setOnClickListener(this);
-
-        gogallery = findViewById(R.id.gogallery);
-        gogallery.setOnClickListener(this);
-        takephoto = findViewById(R.id.takephoto);
-        takephoto.setOnClickListener(this);
 
     }
 
@@ -286,6 +303,27 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         });
     }
 
+    private void insertData() {
+        String data_visita, hora_visita, responsable, nom_visit, descripcio;
+
+        if (
+                //Utils.validar(nomtxt, descripciotxt, categoriatxt, msgbeacontxt, bIdtxt)
+        true) {
+            nom_visit = nom_visita.getText().toString();
+            responsable = nom_respo.getText().toString();
+            data_visita = pickdata.getText().toString();
+            hora_visita = picktime.getText().toString();
+            descripcio = descripcion.getText().toString();
+
+            Visita newVisit = new Visita(data_visita,hora_visita,responsable, nom_visit, descripcio, "");
+
+            crudHelper.insertVisit(this,db,mprogressBar,newVisit, ids);
+
+        }
+    }
+
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -301,6 +339,9 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             case R.id.gogallery:
                 gogallery();
                 break;
+            case R.id.save:
+                insertData();
+                break;
         }
     }
 
@@ -309,6 +350,8 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         if (arePermissionsGranted(necessaryPermissions)) {
             Log.e("EEERROR","Entra");
             easyImage.openCameraForImage(CRUDVisits.this);
+            System.out.println(photos.get(0).component2().toString());
+
         } else {
             Log.e("EEERROR","BAD ENTRY");
             requestPermissionsCompat(necessaryPermissions, CAMERA_REQUEST_CODE);
@@ -319,6 +362,8 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         String[] necessaryPermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (arePermissionsGranted(necessaryPermissions)) {
             easyImage.openGallery(CRUDVisits.this);
+            System.out.println(photos.get(0).component2().toString());
+
         } else {
             requestPermissionsCompat(necessaryPermissions, GALLERY_REQUEST_CODE);
         }
