@@ -21,6 +21,12 @@ object Files {
         return privateTempDir
     }
 
+    private fun ImageDirectory(context: Context): File {
+        val privateTempDir = File(Environment.getExternalStorageDirectory(),"ATHM2APP_FILES")
+        if (!privateTempDir.exists()) privateTempDir.mkdirs()
+        return privateTempDir
+    }
+
     private fun generateFileName(): String {
         return "ei_${System.currentTimeMillis()}"
     }
@@ -93,7 +99,9 @@ object Files {
     @Throws(IOException::class)
     internal fun pickedExistingPicture(context: Context, photoUri: Uri): File {
         val pictureInputStream = context.contentResolver.openInputStream(photoUri)
-        val directory = tempImageDirectory(context)
+        //val directory = tempImageDirectory(context)
+        val directory = ImageDirectory(context)
+
         val photoFile = File(directory, generateFileName() + "." + getMimeType(context, photoUri))
         photoFile.createNewFile()
         writeToFile(pictureInputStream!!, photoFile)
@@ -129,7 +137,8 @@ object Files {
 
     @Throws(IOException::class)
     internal fun createCameraPictureFile(context: Context): MediaFile {
-        val dir = tempImageDirectory(context)
+        //val dir = tempImageDirectory(context)
+        val dir = ImageDirectory(context)
         val file = File.createTempFile(generateFileName(), ".jpg", dir)
         val uri = getUriToFile(context, file)
         return MediaFile(uri, file)
@@ -137,7 +146,8 @@ object Files {
 
     @Throws(IOException::class)
     internal fun createCameraVideoFile(context: Context): MediaFile {
-        val dir = tempImageDirectory(context)
+        //val dir = tempImageDirectory(context)
+        val dir = ImageDirectory(context)
         val file = File.createTempFile(generateFileName(), ".mp4", dir)
         val uri = getUriToFile(context, file)
         return MediaFile(uri, file)
