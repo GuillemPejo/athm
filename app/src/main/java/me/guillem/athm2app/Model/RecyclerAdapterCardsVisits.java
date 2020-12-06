@@ -1,6 +1,8 @@
 package me.guillem.athm2app.Model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
@@ -10,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,6 +26,7 @@ import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.FilterHelper;
 import me.guillem.athm2app.Utils.Utils;
 import me.guillem.athm2app.Views.DetailObra;
+
 
 
 /**
@@ -39,12 +44,14 @@ public class RecyclerAdapterCardsVisits extends RecyclerView.Adapter<RecyclerAda
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tiol, descripcio, data;
         private ItemClickListener itemClickListener;
+        private ImageView  image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             descripcio = itemView.findViewById(R.id.descrip);
             tiol = itemView.findViewById(R.id.titol);
             data = itemView.findViewById(R.id.data);
+            image = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
         }
         @Override
@@ -78,6 +85,14 @@ public class RecyclerAdapterCardsVisits extends RecyclerView.Adapter<RecyclerAda
 
         final Visita v = llistavisites.get(position);
 
+        String url = v.getMedia().get(0);
+        File f = new File(url);
+        Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
+        if(bmp!=null){
+            holder.image.setImageBitmap(bmp);
+        }else{
+            holder.image.setImageDrawable(context.getResources().getDrawable(R.drawable.default_visit));
+        }
         holder.data.setText(v.getData_visita());
         holder.tiol.setText(v.getNom_visit());
         holder.descripcio.setText(v.getDescripcio());

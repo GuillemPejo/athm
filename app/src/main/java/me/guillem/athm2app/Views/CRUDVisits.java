@@ -305,6 +305,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
 
     private void insertData() {
         String data_visita, hora_visita, responsable, nom_visit, descripcio;
+        ArrayList<String> media = new ArrayList<String>();
 
         if (
                 //Utils.validar(nomtxt, descripciotxt, categoriatxt, msgbeacontxt, bIdtxt)
@@ -314,8 +315,11 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             data_visita = pickdata.getText().toString();
             hora_visita = picktime.getText().toString();
             descripcio = descripcion.getText().toString();
+            for(int i=0; i<photos.size();i++) {
+                media.add(photos.get(i).component2().toString());
+            }
 
-            Visita newVisit = new Visita(data_visita,hora_visita,responsable, nom_visit, descripcio, "");
+            Visita newVisit = new Visita(data_visita,hora_visita,responsable, nom_visit, descripcio,media);
 
             crudHelper.insertVisit(this,db,mprogressBar,newVisit, ids);
 
@@ -350,7 +354,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         if (arePermissionsGranted(necessaryPermissions)) {
             Log.e("EEERROR","Entra");
             easyImage.openCameraForImage(CRUDVisits.this);
-            System.out.println(photos.get(0).component2().toString());
+            //System.out.println(photos.get(0).component2().toString());
 
         } else {
             Log.e("EEERROR","BAD ENTRY");
@@ -362,8 +366,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         String[] necessaryPermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (arePermissionsGranted(necessaryPermissions)) {
             easyImage.openGallery(CRUDVisits.this);
-            System.out.println(photos.get(0).component2().toString());
-
         } else {
             requestPermissionsCompat(necessaryPermissions, GALLERY_REQUEST_CODE);
         }

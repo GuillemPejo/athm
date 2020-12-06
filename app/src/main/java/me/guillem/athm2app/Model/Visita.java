@@ -1,7 +1,6 @@
 package me.guillem.athm2app.Model;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Visita {
 
@@ -11,16 +10,15 @@ public class Visita {
     String nom_visit;
     String descripcio;
     String key;
-    //ArrayList<String> media = new ArrayList<String>();
+    ArrayList<String> media = new ArrayList<String>();
 
-    public Visita(String data_visita, String hora_visita, String responsable, String nom_visit, String descripcio, String key) {
+    public Visita(String data_visita, String hora_visita, String responsable, String nom_visit, String descripcio, ArrayList<String> media) {
         this.data_visita = data_visita;
         this.hora_visita = hora_visita;
         this.responsable = responsable;
         this.nom_visit = nom_visit;
         this.descripcio = descripcio;
-        this.key = key;
-        //this.media = media;
+        this.media = media;
     }
     public Visita(){
 
@@ -76,13 +74,13 @@ public class Visita {
     }
 
 
-/*    public ArrayList<String> getMedia() {
+    public ArrayList<String> getMedia() {
         return media;
     }
 
     public void setMedia(ArrayList<String> media) {
         this.media = media;
-    }*/
+    }
 
 
 }
