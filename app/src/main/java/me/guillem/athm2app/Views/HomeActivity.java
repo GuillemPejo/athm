@@ -9,11 +9,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,9 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
+import java.util.Calendar;
 
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 import me.guillem.athm2app.R;
@@ -43,13 +49,15 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private FloatingActionButton button_new, button_newvisit, button_newobra;
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
     private Animation fromBottom, rotateOpen, rotateClose, toBottom;
-    private TextView tnv, tno;
+    private TextView tnv, tno, data_user;
     private final Context c = HomeActivity.this;
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         card = findViewById(R.id.card);
         layer_transparent = findViewById(R.id.shadow_layer);
         button_new = findViewById(R.id.button_add_new);
@@ -62,6 +70,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         tno = findViewById(R.id.tvobra);
         tnv = findViewById(R.id.tvvisita);
 
+
+        mAuth = FirebaseAuth.getInstance();
+
+        data_user = findViewById(R.id.data_user);
+
+        sayHello();
 
         mProgressBar = findViewById(R.id.mProgressBarLoad);
         mProgressBar.setIndeterminate(true);
@@ -108,6 +122,33 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 });
 
 */
+    }
+
+    private void sayHello() {
+        String username = "";
+        if (mAuth != null) username = mAuth.getCurrentUser().getDisplayName();
+
+        String msg = null;
+        String bondia = "Bon dia " + username + " !";
+        String bonatarda = "Bona tarda " + username + " !";
+        String bonanit = "Bona nit " + username + " !";
+
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+        System.out.println(c);
+        System.out.println(timeOfDay);
+
+        if (timeOfDay >= 5 && timeOfDay < 13) {
+            msg = bondia;
+        } else if (timeOfDay >= 13 && timeOfDay < 20) {
+            msg = bonatarda;
+        } else if ((timeOfDay >= 20 && timeOfDay < 24) || (timeOfDay >= 0 && timeOfDay < 5)) {
+            msg = bonanit;
+        }
+
+        data_user.setText(msg);
+
+
     }
 
 

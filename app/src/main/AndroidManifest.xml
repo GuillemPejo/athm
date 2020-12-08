@@ -8,7 +8,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -19,6 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.ATHM2APP">
+        <activity android:name=".Views.AuthActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".Views.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,15 +48,9 @@
         <activity
             android:name=".Views.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".Views.HomeActivity">
-        </activity>
-        <activity
-            android:name=".Views.CRUDVisits">
-        </activity>
-        <activity
-            android:name=".Views.CRUDObras">
-        </activity>
+        <activity android:name=".Views.HomeActivity"></activity>
+        <activity android:name=".Views.CRUDVisits"></activity>
+        <activity android:name=".Views.CRUDObras"></activity>
     </application>
 
 </manifest>

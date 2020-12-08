@@ -42,7 +42,7 @@
                     android:text="Titol"
                     android:textSize="20dp" />
 
-                <TextView
+<!--                <TextView
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +57,25 @@
                     android:drawableTint="@color/negre"
                     android:ems="10"
                     android:hint="Nom de la visita"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName" />-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30"
+                    app:endIconMode="clear_text"
+                    app:startIconDrawable="@drawable/ic_baseline_new_obra"
+                    android:hint="Nom de la visita"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nom_visita"
+                        android:drawablePadding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <TextView
                     android:id="@+id/textView3"
@@ -104,6 +122,7 @@
                         app:layout_constraintStart_toEndOf="@+id/icon_recording"
                         app:layout_constraintTop_toTopOf="@+id/mic_button" />
 
+<!--
                     <TextView
                         android:id="@+id/Data"
                         android:layout_width="wrap_content"
@@ -127,6 +146,26 @@
                         android:maxLines="1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/Data" />
+-->
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Data"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="30"
+                        app:endIconMode="clear_text"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:startIconDrawable="@drawable/ic_baseline_calendar_today_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/pickdata"
+                            android:layout_width="178dp"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:id="@+id/Time"
@@ -159,7 +198,7 @@
                         android:paddingTop="20dp"
                         android:text="Descripció de l'obra"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/pickdata" />
+                        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
                     <EditText
                         android:id="@+id/descripcion"

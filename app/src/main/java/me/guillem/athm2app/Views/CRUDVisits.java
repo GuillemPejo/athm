@@ -43,6 +43,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 
 import java.io.File;
@@ -92,7 +93,8 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     private Animation mic_in, mic_out, bilink;
     ImageView icon_recording;
     Button gogallery, takephoto, save;
-    EditText pickdata, picktime, timer;
+    EditText picktime, timer;
+    TextInputEditText pickdata;
     EditText nom_visita, nom_respo, descripcion;
 
     private Handler handler;
