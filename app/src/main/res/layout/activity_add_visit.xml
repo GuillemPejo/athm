@@ -21,8 +21,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:orientation="vertical">
 
                 <ProgressBar
                     android:id="@+id/mProgressBarSave"
@@ -40,60 +39,49 @@
                     android:gravity="center"
                     android:padding="20dp"
                     android:text="Titol"
-                    android:textSize="20dp" />
-
-<!--                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Titol de la visita" />
-
-                <EditText
-                    android:id="@+id/nom_visita"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_baseline_new_obra"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/negre"
-                    android:ems="10"
-                    android:hint="Nom de la visita"
-                    android:inputType="textPersonName" />-->
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:hint="Nom de la visita"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="10dp"
                     app:counterEnabled="true"
                     app:counterMaxLength="30"
                     app:endIconMode="clear_text"
-                    app:startIconDrawable="@drawable/ic_baseline_new_obra"
-                    android:hint="Nom de la visita"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:startIconDrawable="@drawable/ic_baseline_new_obra">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/nom_visita"
-                        android:drawablePadding="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-                <TextView
-                    android:id="@+id/textView3"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="20dp"
-                    android:text="Responsable d'obra" />
+                    android:layout_height="match_parent"
+                    app:startIconDrawable="@drawable/ic_baseline_person_24"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:hint="Nom del responsable">
 
-                <EditText
-                    android:id="@+id/nom_respo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_baseline_person_24"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/negre"
-                    android:ems="10"
-                    android:hint="Nom del responsable"
-                    android:inputType="textPersonName" />
+                    <AutoCompleteTextView
+                        android:id="@+id/nom_respo"
+                        android:drawablePadding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -104,9 +92,9 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/descripcion"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_descrip"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/descripcion"
+                        app:layout_constraintTop_toTopOf="@+id/tv_descrip"
                         app:srcCompat="@drawable/ic_baseline_keyboard_voice_24"
                         app:tint="@android:color/holo_red_dark" />
 
@@ -122,52 +110,58 @@
                         app:layout_constraintStart_toEndOf="@+id/icon_recording"
                         app:layout_constraintTop_toTopOf="@+id/mic_button" />
 
-<!--
-                    <TextView
-                        android:id="@+id/Data"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Data"
-                        app:layout_constraintEnd_toEndOf="@+id/pickdata"
-                        app:layout_constraintStart_toStartOf="@+id/pickdata"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/pickdata"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-                        android:drawablePadding="5dp"
-                        android:drawableTint="@color/negre"
-                        android:focusable="false"
-                        android:hint="Escull una data"
-                        android:inputType="date"
-                        android:maxLines="1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Data" />
--->
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:hint="Data"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="30"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="10dp"
                         app:endIconMode="clear_text"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:startIconDrawable="@drawable/ic_baseline_calendar_today_24">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/pickdata"
-                            android:layout_width="178dp"
+                            android:layout_width="195dp"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="5dp" />
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="true"
+                            android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayout3"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="Hora"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="10dp"
+                        app:endIconMode="clear_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:startIconDrawable="@drawable/ic_baseline_calendar_today_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/picktime"
+                            android:layout_width="152dp"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="true"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+<!--                    <TextView
                         android:id="@+id/Time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -189,16 +183,37 @@
                         android:inputType="date"
                         android:maxLines="1"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Time" />
+                        app:layout_constraintTop_toBottomOf="@+id/Time" />-->
 
-                    <TextView
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="10dp"                        android:id="@+id/tv_descrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_description_24"
+                        android:hint="Descripció de l'obra"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/descripcion"
+                            android:inputType="textMultiLine"
+                            android:drawablePadding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+<!--                    <TextView
                         android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="20dp"
                         android:text="Descripció de l'obra"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+/>
 
                     <EditText
                         android:id="@+id/descripcion"
@@ -210,10 +225,9 @@
                         android:drawableTint="@color/negre"
                         android:ems="10"
                         android:hint="Descripció"
-                        android:inputType="textMultiLine"
                         app:layout_constraintEnd_toStartOf="@+id/mic_button"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView6" />-->
 
                     <ImageButton
                         android:id="@+id/mic_button"
@@ -221,9 +235,9 @@
                         android:layout_height="40dp"
                         android:background="@drawable/rounded_corner_grey"
                         android:backgroundTint="@color/blau"
-                        app:layout_constraintBottom_toBottomOf="@+id/descripcion"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_descrip"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/descripcion"
+                        app:layout_constraintTop_toTopOf="@+id/tv_descrip"
                         app:srcCompat="@drawable/ic_baseline_keyboard_voice_24" />
 
                     <Button
@@ -233,7 +247,7 @@
                         android:layout_marginTop="20dp"
                         android:text="FER FOTO"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/descripcion" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_descrip" />
 
                     <Button
                         android:id="@+id/gogallery"

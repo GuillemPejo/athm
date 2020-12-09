@@ -1,5 +1,6 @@
 package me.guillem.athm2app.Views;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -166,11 +167,13 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.comerce_page_menu, menu);
+
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setIconified(true);
         searchView.setQueryHint("Buscar");
+        searchView.setLayoutTransition(new LayoutTransition());
         return true;
     }
     @Override

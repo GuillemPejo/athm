@@ -24,6 +24,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -50,6 +52,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -93,9 +96,9 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     private Animation mic_in, mic_out, bilink;
     ImageView icon_recording;
     Button gogallery, takephoto, save;
-    EditText picktime, timer;
-    TextInputEditText pickdata;
-    EditText nom_visita, nom_respo, descripcion;
+    EditText timer;
+    TextInputEditText pickdata, picktime, nom_visita, descripcion;
+    AutoCompleteTextView nom_respo;
 
     private Handler handler;
     private EasyImage easyImage;
@@ -118,22 +121,21 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     String ids;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_visit);
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             checkPermission();
         }
         Bundle extras = getIntent().getExtras();
-        String title= extras.getString("Obra");
+        String title = extras.getString("Obra");
         ids = extras.getString("ids");
 
         descripcion = findViewById(R.id.descripcion);
-        nom_visita = findViewById(R.id.nom_visita);
         nom_respo = findViewById(R.id.nom_respo);
+        nom_visita = findViewById(R.id.nom_visita);
         micButton = findViewById(R.id.mic_button);
         timer = findViewById(R.id.anim_mic);
         icon_recording = findViewById(R.id.icon_recording);
@@ -144,6 +146,13 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         pickdata.setOnClickListener(this);
         picktime = findViewById(R.id.picktime);
         picktime.setOnClickListener(this);
+
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+
+        pickdata.setText(currentDate);
+        picktime.setText(currentTime);
+        nom_respo.setText("Ramon");
 
         gogallery = findViewById(R.id.gogallery);
         gogallery.setOnClickListener(this);
@@ -157,12 +166,15 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
 
         voicerecognizr();
 
+        populateUserDrownMenu();
+
+
         if (savedInstanceState != null) {
             photos = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
         }
 
         imagesAdapter = new ImageViewAdapter(this, photos);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setHasFixedSize(true);
         //recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(imagesAdapter);
@@ -177,14 +189,20 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
                 .build();
 
 
-
-
         if (extras != null) {
             TextView t1 = findViewById(R.id.titol_obra);
-            t1.setText("Nova visita a l'obra "+ title);
+            t1.setText("Nova visita a l'obra " + title);
         }
 
     }
+
+    private void populateUserDrownMenu() {
+        String[] USERS = new String[]{"Ramon", "Guillem", "Jose", "Admin"};
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, USERS);
+        nom_respo.setAdapter(adaptador);
+    }
+
 
     private void voicerecognizr() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -447,7 +465,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
-                final String selectedDate = day + " / " + (month+1) + " / " + year;
+                final String selectedDate = day + "/" + (month+1) + "/" + year;
                 pickdata.setText(selectedDate);
             }
         });
@@ -462,7 +480,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
                 if(min.length()==1){
                     min = "0" + min;
                 }
-                final String selectedTime = hourOfDay + " : " + min;
+                final String selectedTime = hourOfDay + ":" + min;
                 picktime.setText(selectedTime);
             }
         });
