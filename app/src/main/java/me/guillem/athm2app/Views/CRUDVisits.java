@@ -1,6 +1,7 @@
 package me.guillem.athm2app.Views;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -44,7 +45,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.fxn.pix.Options;
+import com.fxn.pix.Pix;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 
@@ -60,20 +64,17 @@ import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.guillem.athm2app.Model.AdapterImages;
 import me.guillem.athm2app.Model.Visita;
 import me.guillem.athm2app.Utils.FirebaseCRUD;
 import me.guillem.athm2app.Utils.Utils;
-import me.guillem.athm2app.image_viewer.ChooserType;
-import me.guillem.athm2app.image_viewer.ImageViewAdapter;
-import me.guillem.athm2app.image_viewer.MediaFile;
-import me.guillem.athm2app.image_viewer.MediaSource;
-
 
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.DatePickerFragment;
 import me.guillem.athm2app.Utils.TimePickerFragment;
-import me.guillem.athm2app.image_viewer.EasyImage;
-import pl.aprilapps.easyphotopicker.DefaultCallback;
+
+import static com.fxn.utility.PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS;
+
 
 /**
  * * Created by Guillem on 02/12/20.
@@ -101,15 +102,12 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     AutoCompleteTextView nom_respo;
 
     private Handler handler;
-    private EasyImage easyImage;
 
     protected RecyclerView recyclerView;
+    AdapterImages imagesAdapter;
+    Options options;
+    ArrayList<String> returnValue = new ArrayList<>();
 
-    protected View galleryButton;
-
-    private ImageViewAdapter imagesAdapter;
-
-    private ArrayList<MediaFile> photos = new ArrayList<>();
 
 
     private int audioTotalTime;
@@ -129,6 +127,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             checkPermission();
         }
+
         Bundle extras = getIntent().getExtras();
         String title = extras.getString("Obra");
         ids = extras.getString("ids");
@@ -165,28 +164,29 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         recyclerView = findViewById(R.id.rv_images);
 
         voicerecognizr();
-
         populateUserDrownMenu();
 
 
-        if (savedInstanceState != null) {
-            photos = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
-        }
 
-        imagesAdapter = new ImageViewAdapter(this, photos);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.setHasFixedSize(true);
-        //recyclerView.setNestedScrollingEnabled(false);
+
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayout.VERTICAL));
+        imagesAdapter = new AdapterImages(this);
+        options = Options.init()
+                .setRequestCode(100)
+                .setCount(10)
+                .setFrontfacing(false)
+                .setPreSelectedUrls(returnValue)
+                .setExcludeVideos(false)
+                .setVideoDurationLimitinSeconds(30)
+                .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
+                .setPath("/ATHM2");
         recyclerView.setAdapter(imagesAdapter);
+        findViewById(R.id.takephoto).setOnClickListener((View view) -> {
+            options.setPreSelectedUrls(returnValue);
+            Pix.start(CRUDVisits.this, options);
+        });
 
-        easyImage = new EasyImage.Builder(this)
-                .setChooserTitle("Pick media")
-                .setCopyImagesToPublicGalleryFolder(false)
-//                .setChooserType(ChooserType.CAMERA_AND_DOCUMENTS)
-                .setChooserType(ChooserType.CAMERA_AND_GALLERY)
-                .setFolderName("EasyImage sample")
-                .allowMultiple(true)
-                .build();
+
 
 
         if (extras != null) {
@@ -335,8 +335,9 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             data_visita = pickdata.getText().toString();
             hora_visita = picktime.getText().toString();
             descripcio = descripcion.getText().toString();
-            for(int i=0; i<photos.size();i++) {
-                media.add(photos.get(i).component2().toString());
+            for(int i=0; i<returnValue.size();i++) {
+                Log.e("LOOK ARRAY",returnValue.toString());
+                media.add(returnValue.get(i));
             }
 
             Visita newVisit = new Visita(data_visita,hora_visita,responsable, nom_visit, descripcio,media);
@@ -357,18 +358,13 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             case R.id.picktime:
                 showTimePickerDialog();
                 break;
-            case R.id.takephoto:
-                takephoto();
-                break;
-            case R.id.gogallery:
-                gogallery();
-                break;
             case R.id.save:
                 insertData();
                 break;
         }
     }
 
+/*
     private void takephoto() {
         String[] necessaryPermissions = new String[]{Manifest.permission.CAMERA};
         if (arePermissionsGranted(necessaryPermissions)) {
@@ -391,68 +387,40 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private void onPhotosReturned(@NonNull MediaFile[] returnedPhotos) {
-        photos.addAll(Arrays.asList(returnedPhotos));
-        imagesAdapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(photos.size() - 1);
-    }
+*/
 
-    private boolean arePermissionsGranted(String[] permissions) {
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)
-                return false;
 
-        }
-        return true;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(PHOTOS_KEY, photos);
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == CHOOSER_PERMISSIONS_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            easyImage.openChooser(CRUDVisits.this);
-        } else if (requestCode == CAMERA_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            easyImage.openCameraForImage(CRUDVisits.this);
-        } else if (requestCode == CAMERA_VIDEO_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            easyImage.openCameraForVideo(CRUDVisits.this);
-        } else if (requestCode == GALLERY_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            easyImage.openGallery(CRUDVisits.this);
-        } else if (requestCode == DOCUMENTS_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            easyImage.openDocuments(CRUDVisits.this);
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Pix.start(CRUDVisits.this, options);
+                } else {
+                    Toast.makeText(CRUDVisits.this, "Approve permissions to open Pix ImagePicker", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
         }
     }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //Log.e("val", "requestCode ->  " + requestCode+"  resultCode "+resultCode);
+        switch (requestCode) {
+            case (100): {
+                if (resultCode == Activity.RESULT_OK) {
+                    returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
 
-        easyImage.handleActivityResult(requestCode, resultCode, data, this, new EasyImage.Callbacks() {
-            @Override
-            public void onMediaFilesPicked(MediaFile[] imageFiles, MediaSource source) {
-                for (MediaFile imageFile : imageFiles) {
-                    Log.d("EasyImage", "Image file returned: " + imageFile.getFile().toString());
+                    System.out.println(returnValue);
+
+                    imagesAdapter.addImage(returnValue);
                 }
-                onPhotosReturned(imageFiles);
             }
-
-            @Override
-            public void onImagePickerError(@NonNull Throwable error, @NonNull MediaSource source) {
-                //Some error handling
-                error.printStackTrace();
-            }
-
-            @Override
-            public void onCanceled(@NonNull MediaSource source) {
-                //Not necessary to remove any files manually anymore
-            }
-        });
+            break;
+        }
     }
 
 

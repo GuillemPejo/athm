@@ -2,6 +2,9 @@ package me.guillem.athm2app.Utils;
 
 import android.widget.Filter;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,8 @@ public class FilterHelper extends Filter {
     static List<Obra> currentList;
     static RecyclerAdapterCardsHome adapter;
 
+    @NotNull
+    @Contract("_, _ -> new")
     public static FilterHelper newInstance(List<Obra> currentList, RecyclerAdapterCardsHome adapter) {
         FilterHelper.adapter = adapter;
         FilterHelper.currentList = currentList;
@@ -56,7 +61,7 @@ public class FilterHelper extends Filter {
         return filterResults;
     }
 
-    protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+    protected void publishResults(CharSequence charSequence, @NotNull FilterResults filterResults) {
 
         adapter.llistadobres= (ArrayList<Obra>) filterResults.values;
         adapter.notifyDataSetChanged();

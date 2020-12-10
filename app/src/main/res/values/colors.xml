@@ -13,4 +13,6 @@
     <color name="tronja">#FFC107</color>
     <color name="textos_sec">#8E8E8E</color>
     <color name="location">#8BC34A</color>
+    <color name="colorPrimaryPix">#09144E</color>
+    <color name="colorPrimaryLightPix">#3F51B5</color>
 </resources>

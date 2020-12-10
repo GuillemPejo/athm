@@ -128,7 +128,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/pickdata"
-                            android:layout_width="195dp"
+                            android:layout_width="165dp"
                             android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
@@ -153,7 +153,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/picktime"
-                            android:layout_width="152dp"
+                            android:layout_width="151dp"
                             android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
@@ -161,7 +161,7 @@
                             android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-<!--                    <TextView
+                    <!--                    <TextView
                         android:id="@+id/Time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -186,28 +186,29 @@
                         app:layout_constraintTop_toBottomOf="@+id/Time" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tv_descrip"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Descripció de l'obra"
                         android:paddingLeft="20dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
-                        android:paddingBottom="10dp"                        android:id="@+id/tv_descrip"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
                         app:endIconMode="clear_text"
-                        app:startIconDrawable="@drawable/ic_baseline_description_24"
-                        android:hint="Descripció de l'obra"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:startIconDrawable="@drawable/ic_baseline_description_24">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/descripcion"
-                            android:inputType="textMultiLine"
-                            android:drawablePadding="5dp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5dp"
+                            android:inputType="textMultiLine" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-<!--                    <TextView
+                    <!--                    <TextView
                         android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -253,22 +254,15 @@
                         android:id="@+id/gogallery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="20dp"
                         android:text="GALERIA"
-                        app:layout_constraintBottom_toBottomOf="@+id/takephoto"
-                        app:layout_constraintStart_toEndOf="@+id/takephoto"
-                        app:layout_constraintTop_toTopOf="@+id/takephoto"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/takephoto" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_images"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="24dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/gogallery"
                         app:layout_constraintTop_toBottomOf="@+id/gogallery" />
 
 
