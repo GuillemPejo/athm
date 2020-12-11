@@ -62,7 +62,7 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/user"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_alignTop="@+id/ombra"

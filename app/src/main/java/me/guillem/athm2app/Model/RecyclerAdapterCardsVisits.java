@@ -18,6 +18,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +40,9 @@ public class RecyclerAdapterCardsVisits extends RecyclerView.Adapter<RecyclerAda
 
     private Context context;
     public List<Visita> llistavisites;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+
 
     interface ItemClickListener {
         void onItemClick(int pos);
@@ -44,7 +51,8 @@ public class RecyclerAdapterCardsVisits extends RecyclerView.Adapter<RecyclerAda
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tiol, descripcio, data;
         private ItemClickListener itemClickListener;
-        private ImageView  image;
+        private ImageView  image, user;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,6 +60,9 @@ public class RecyclerAdapterCardsVisits extends RecyclerView.Adapter<RecyclerAda
             tiol = itemView.findViewById(R.id.titol);
             data = itemView.findViewById(R.id.data);
             image = itemView.findViewById(R.id.image);
+            user = itemView.findViewById(R.id.user);
+
+
             itemView.setOnClickListener(this);
         }
         @Override
@@ -93,6 +104,9 @@ public class RecyclerAdapterCardsVisits extends RecyclerView.Adapter<RecyclerAda
         }else{
             holder.image.setImageDrawable(context.getResources().getDrawable(R.drawable.default_visit));
         }
+
+        Glide.with(context).load(mAuth.getCurrentUser().getPhotoUrl()).into(holder.user);
+
         holder.data.setText(v.getData_visita());
         holder.tiol.setText(v.getNom_visit());
         holder.descripcio.setText(v.getDescripcio());

@@ -83,16 +83,6 @@ public class AdapterImages extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 context.startActivity(intent);
             }
         });
-        ((Holder) holder).iv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                //((Holder) holder).iv.setBackground(context.getResources().getDrawable(R.drawable.borderimageview));
-                ((Holder) holder).border.setVisibility(View.VISIBLE);
-
-
-                return false;
-            }
-        });
         /*Bitmap scaled = com.fxn.utility.Utility.getScaledBitmap(
             500f, com.fxn.utility.Utility.rotate(d,list.get(position).getOrientation()));*/
 
@@ -105,14 +95,11 @@ public class AdapterImages extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class Holder extends RecyclerView.ViewHolder {
         public ImageView iv, play;
-        public FrameLayout border;
-
 
         public Holder(View itemView) {
             super(itemView);
             iv = itemView.findViewById(R.id.iv);
             play = itemView.findViewById(R.id.play);
-            border = itemView.findViewById(R.id.border);
 
 
         }

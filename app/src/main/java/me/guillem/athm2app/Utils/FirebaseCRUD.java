@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +26,7 @@ import static me.guillem.athm2app.Utils.Utils.DataCacheVisits;
 
 import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
-
+import me.guillem.athm2app.Views.HomeActivity;
 
 
 public class FirebaseCRUD {
@@ -85,7 +87,16 @@ public class FirebaseCRUD {
 
     public void select(final AppCompatActivity a, DatabaseReference db, final ProgressBar pb, final RecyclerView rv, final RecyclerAdapterCardsHome adapter) {
         Utils.showProgressBar(pb);
-
+        SkeletonScreen skeletonScreen = Skeleton.bind(rv)
+                .adapter(adapter)
+                .shimmer(true)
+                .angle(0)
+                .color(R.color.shimer)
+                .frozen(false)
+                .duration(1200)
+                .count(3)
+                .load(R.layout.skeleton_row)
+                .show(); //default count is 10
         db.child("Obra").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,6 +113,7 @@ public class FirebaseCRUD {
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
+                            skeletonScreen.hide();
                             Utils.hideProgressBar(pb);
                             rv.smoothScrollToPosition(DataCache.size());
                         }
@@ -114,6 +126,7 @@ public class FirebaseCRUD {
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("FIREBASE CRUD", databaseError.getMessage());
                 Utils.hideProgressBar(pb);
+                skeletonScreen.hide();
                 Utils.showInfoDialog(a,"Opss.. Alguna cosa ha anat malament",databaseError.getMessage());
             }
         });

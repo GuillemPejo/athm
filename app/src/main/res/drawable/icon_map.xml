@@ -4,7 +4,7 @@
 
     <item
         android:gravity="center"
-        android:drawable="@drawable/circle"
+        android:drawable="@drawable/circle_green"
         />
 
     <item

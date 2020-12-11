@@ -7,23 +7,12 @@
     <ImageView
         android:id="@+id/iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:minHeight="200dp"
         android:scaleType="fitCenter"/>
 
-    <FrameLayout
-        android:id="@+id/border"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:minHeight="200dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/borderimageview"
-        android:visibility="gone"
-        >
 
-    </FrameLayout>
 
     <ImageView
         android:id="@+id/play"

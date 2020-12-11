@@ -49,7 +49,17 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.fxn.pix.Options;
 import com.fxn.pix.Pix;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
 import com.google.firebase.database.DatabaseReference;
 
 import java.io.File;
@@ -57,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -66,6 +77,7 @@ import java.util.TimerTask;
 
 import me.guillem.athm2app.Model.AdapterImages;
 import me.guillem.athm2app.Model.Visita;
+import me.guillem.athm2app.Utils.DriveServiceHelper;
 import me.guillem.athm2app.Utils.FirebaseCRUD;
 import me.guillem.athm2app.Utils.Utils;
 
@@ -74,6 +86,7 @@ import me.guillem.athm2app.Utils.DatePickerFragment;
 import me.guillem.athm2app.Utils.TimePickerFragment;
 
 import static com.fxn.utility.PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS;
+import static me.guillem.athm2app.Views.TestingDrive.verifyStoragePermissions;
 
 
 /**
@@ -87,16 +100,23 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     private static final int CAMERA_VIDEO_REQUEST_CODE = 7501;
     private static final int GALLERY_REQUEST_CODE = 7502;
     private static final int DOCUMENTS_REQUEST_CODE = 7503;
+    private static final String TAG = "";
+
+    private DriveServiceHelper mDriveServiceHelper;
+
 
     private FirebaseCRUD crudHelper = new FirebaseCRUD();
     private DatabaseReference db = Utils.getDatabaseRefence();
 
+    private static final int REQUEST_CODE_SIGN_IN = 1;
     public static final Integer RecordAudioRequestCode = 1;
     private SpeechRecognizer speechRecognizer;
     private ImageButton micButton;
     private Animation mic_in, mic_out, bilink;
     ImageView icon_recording;
-    Button gogallery, takephoto, save;
+    TextView t1;
+    Button save;
+    ImageView takephoto;
     EditText timer;
     TextInputEditText pickdata, picktime, nom_visita, descripcion;
     AutoCompleteTextView nom_respo;
@@ -153,8 +173,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         picktime.setText(currentTime);
         nom_respo.setText("Ramon");
 
-        gogallery = findViewById(R.id.gogallery);
-        gogallery.setOnClickListener(this);
         takephoto = findViewById(R.id.takephoto);
         takephoto.setOnClickListener(this);
 
@@ -181,6 +199,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
                 .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
                 .setPath("/ATHM2");
         recyclerView.setAdapter(imagesAdapter);
+
         findViewById(R.id.takephoto).setOnClickListener((View view) -> {
             options.setPreSelectedUrls(returnValue);
             Pix.start(CRUDVisits.this, options);
@@ -190,9 +209,13 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
 
 
         if (extras != null) {
-            TextView t1 = findViewById(R.id.titol_obra);
+            t1 = findViewById(R.id.titol_obra);
             t1.setText("Nova visita a l'obra " + title);
         }
+
+        requestSignIn();
+        verifyStoragePermissions(this);
+
 
     }
 
@@ -252,7 +275,15 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
 
             @Override
             public void onError(int i) {
-                Toast.makeText(CRUDVisits.this, "Sisusplau, mantingui premut el botó", Toast.LENGTH_SHORT).show();
+                speechRecognizer.stopListening();
+                timer.setVisibility(View.GONE);
+                icon_recording.setVisibility(View.GONE);
+                descripcion.setVisibility(View.VISIBLE);
+                micButton.animate().scaleX(1f).scaleY(1f).translationX(0).translationY(0).setDuration(100).setInterpolator(new LinearInterpolator()).start();
+                icon_recording.clearAnimation();
+                timerTask.cancel();
+
+                //Snackbar.make(getactivi, "Esto es una prueba", Snackbar.LENGTH_SHORT).show();
 
             }
 
@@ -323,6 +354,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         });
     }
 
+
     private void insertData() {
         String data_visita, hora_visita, responsable, nom_visit, descripcio;
         ArrayList<String> media = new ArrayList<String>();
@@ -341,13 +373,61 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             }
 
             Visita newVisit = new Visita(data_visita,hora_visita,responsable, nom_visit, descripcio,media);
-
+            createFile(returnValue);
             crudHelper.insertVisit(this,db,mprogressBar,newVisit, ids);
 
         }
     }
 
+    private void handleSignInResult(Intent result) {
+        GoogleSignIn.getSignedInAccountFromIntent(result)
+                .addOnSuccessListener(googleAccount -> {
+                    Log.d(TAG, "Signed in as " + googleAccount.getEmail());
 
+                    // Use the authenticated account to sign in to the Drive service.
+                    GoogleAccountCredential credential =
+                            GoogleAccountCredential.usingOAuth2(
+                                    this, Collections.singleton(DriveScopes.DRIVE_FILE));
+                    credential.setSelectedAccount(googleAccount.getAccount());
+                    Drive googleDriveService =
+                            new Drive.Builder(
+                                    AndroidHttp.newCompatibleTransport(),
+                                    new GsonFactory(),
+                                    credential)
+                                    .setApplicationName("Drive API Migration")
+                                    .build();
+
+                    // The DriveServiceHelper encapsulates all REST API and SAF functionality.
+                    // Its instantiation is required before handling any onClick actions.
+                    mDriveServiceHelper = new DriveServiceHelper(googleDriveService);
+                })
+                .addOnFailureListener(exception -> Log.e(TAG, "Unable to sign in.", exception));
+    }
+
+    private void createFile(ArrayList<String> returnValue) {
+        if (mDriveServiceHelper != null) {
+            Log.d(TAG, "Creating a file.");
+            mDriveServiceHelper.createFolder();
+            mDriveServiceHelper.createFile(returnValue, t1.getText().toString());
+/*                    .addOnSuccessListener(fileId -> readFile(fileId))
+                    .addOnFailureListener(exception ->
+                            Log.e(TAG, "Couldn't create file.", exception));*/
+        }
+    }
+
+    private void requestSignIn() {
+        Log.d(TAG, "Requesting sign-in");
+
+        GoogleSignInOptions signInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                        .build();
+        GoogleSignInClient client = GoogleSignIn.getClient(this, signInOptions);
+
+        // The result of the sign-in Intent is handled in onActivityResult.
+        startActivityForResult(client.getSignInIntent(), REQUEST_CODE_SIGN_IN);
+    }
 
     @Override
     public void onClick(View view) {
@@ -389,8 +469,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
 
 */
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -420,6 +498,11 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
                 }
             }
             break;
+            case REQUEST_CODE_SIGN_IN:
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    handleSignInResult(data);
+                }
+                break;
         }
     }
 

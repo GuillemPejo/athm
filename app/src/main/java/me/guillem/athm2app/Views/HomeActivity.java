@@ -3,15 +3,21 @@ package me.guillem.athm2app.Views;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -22,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
+import io.supercharge.shimmerlayout.ShimmerLayout;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
 import me.guillem.athm2app.R;
 import me.guillem.athm2app.Utils.FirebaseCRUD;
@@ -48,17 +57,21 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private LinearLayoutManager layoutManager;
     protected RecyclerAdapterCardsHome adapter;
     private FloatingActionButton button_new, button_newvisit, button_newobra;
-    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
     private Animation fromBottom, rotateOpen, rotateClose, toBottom;
     private TextView tnv, tno, data_user;
+
     private final Context c = HomeActivity.this;
+
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         card = findViewById(R.id.card);
         layer_transparent = findViewById(R.id.shadow_layer);
         button_new = findViewById(R.id.button_add_new);
@@ -70,7 +83,6 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         rotateClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_close_button);
         tno = findViewById(R.id.tvobra);
         tnv = findViewById(R.id.tvvisita);
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -93,6 +105,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         adapter=new RecyclerAdapterCardsHome(this,Utils.DataCache);
 
         rv.setAdapter(adapter);
+
 
         bindDades();
 
@@ -149,16 +162,16 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
         data_user.setText(msg);
 
-
     }
-
 
     private void bindDades(){
         recurs_crud.select(this,Utils.getDatabaseRefence(),mProgressBar,rv,adapter);
+
     }
 
     public void afegirDes(View view) {
-        Intent intent = new Intent(this, MapsActivity.class);
+        //Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, TestingDrive.class);
         startActivity(intent);
     }
 

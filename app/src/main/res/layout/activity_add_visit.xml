@@ -89,8 +89,8 @@
 
                     <ImageView
                         android:id="@+id/icon_recording"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_descrip"
                         app:layout_constraintStart_toStartOf="parent"
@@ -241,29 +241,29 @@
                         app:layout_constraintTop_toTopOf="@+id/tv_descrip"
                         app:srcCompat="@drawable/ic_baseline_keyboard_voice_24" />
 
-                    <Button
-                        android:id="@+id/takephoto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="FER FOTO"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_descrip" />
-
-                    <Button
-                        android:id="@+id/gogallery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="GALERIA"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/takephoto" />
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_images"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:layout_constraintStart_toEndOf="@+id/gogallery"
-                        app:layout_constraintTop_toBottomOf="@+id/gogallery" />
+                        android:layout_margin="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/takephoto" />
+
+                    <ImageButton
+                        android:id="@+id/takephoto"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_corner_grey"
+                        android:backgroundTint="@color/blau"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_descrip"
+                        app:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

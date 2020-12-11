@@ -10,7 +10,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonAdapter;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
@@ -154,6 +158,7 @@ public class Utils {
     public static void showProgressBar(ProgressBar pb){
         pb.setVisibility(View.VISIBLE);
     }
+
 
     public static void hideProgressBar(ProgressBar pb){
         pb.setVisibility(View.GONE);
