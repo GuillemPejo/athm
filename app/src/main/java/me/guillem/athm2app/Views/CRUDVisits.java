@@ -88,55 +88,43 @@ import me.guillem.athm2app.Utils.TimePickerFragment;
 import static com.fxn.utility.PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS;
 import static me.guillem.athm2app.Views.TestingDrive.verifyStoragePermissions;
 
-
 /**
  * * Created by Guillem on 02/12/20.
  */
 public class CRUDVisits extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String PHOTOS_KEY = "LIST_IMAGE";
-    private static final int CHOOSER_PERMISSIONS_REQUEST_CODE = 7459;
-    private static final int CAMERA_REQUEST_CODE = 7500;
-    private static final int CAMERA_VIDEO_REQUEST_CODE = 7501;
-    private static final int GALLERY_REQUEST_CODE = 7502;
-    private static final int DOCUMENTS_REQUEST_CODE = 7503;
     private static final String TAG = "";
+    private static final int REQUEST_CODE_SIGN_IN = 1;
+    public static final Integer RecordAudioRequestCode = 1;
 
     private DriveServiceHelper mDriveServiceHelper;
-
 
     private FirebaseCRUD crudHelper = new FirebaseCRUD();
     private DatabaseReference db = Utils.getDatabaseRefence();
 
-    private static final int REQUEST_CODE_SIGN_IN = 1;
-    public static final Integer RecordAudioRequestCode = 1;
     private SpeechRecognizer speechRecognizer;
-    private ImageButton micButton;
-    private Animation mic_in, mic_out, bilink;
-    ImageView icon_recording;
-    TextView t1;
-    Button save;
-    ImageView takephoto;
-    EditText timer;
-    TextInputEditText pickdata, picktime, nom_visita, descripcion;
-    AutoCompleteTextView nom_respo;
-
+    private AdapterImages imagesAdapter;
     private Handler handler;
-
-    protected RecyclerView recyclerView;
-    AdapterImages imagesAdapter;
-    Options options;
-    ArrayList<String> returnValue = new ArrayList<>();
-
-
-
-    private int audioTotalTime;
     private TimerTask timerTask;
     private Timer audioTimer;
     private SimpleDateFormat timeFormatter;
+    private Options options;
+    private Bundle extras;
 
+    private Animation mic_in, mic_out, bilink;
+    private ImageView icon_recording, takephoto;
+    private ImageButton micButton;
+    private Button save;
+    private TextView title_obra;
+    private EditText timer;
+    private TextInputEditText pickdata, picktime, nom_visita, descripcion;
+    private AutoCompleteTextView nom_respo;
     private ProgressBar mprogressBar;
-    String ids;
+    protected RecyclerView recyclerView;
+
+    private ArrayList<String> returnValue = new ArrayList<>();
+    private int audioTotalTime;
+    private String ids, title;
 
 
     @Override
@@ -148,47 +136,60 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             checkPermission();
         }
 
-        Bundle extras = getIntent().getExtras();
-        String title = extras.getString("Obra");
+        //Get Bundle (title name and )
+        extras = getIntent().getExtras();
+        title = extras.getString("Obra");
         ids = extras.getString("ids");
 
-        descripcion = findViewById(R.id.descripcion);
-        nom_respo = findViewById(R.id.nom_respo);
-        nom_visita = findViewById(R.id.nom_visita);
-        micButton = findViewById(R.id.mic_button);
-        timer = findViewById(R.id.anim_mic);
-        icon_recording = findViewById(R.id.icon_recording);
+        //Get name of obra
+        title_obra = findViewById(R.id.titol_obra);
+        title_obra.setText("Nova visita a l'obra " + title);
 
-        mprogressBar = findViewById(R.id.mProgressBarSave);
+        //UI
+        nom_visita = findViewById(R.id.nom_visita);
+        nom_respo = findViewById(R.id.nom_respo);
+        nom_respo.setText("Ramon");
+        //Menu respos
+        populateUserDrownMenu();
+
+        descripcion = findViewById(R.id.descripcion);
 
         pickdata = findViewById(R.id.pickdata);
         pickdata.setOnClickListener(this);
         picktime = findViewById(R.id.picktime);
         picktime.setOnClickListener(this);
 
+        //Date and time getters
         String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-
         pickdata.setText(currentDate);
         picktime.setText(currentTime);
-        nom_respo.setText("Ramon");
+
+        micButton = findViewById(R.id.mic_button);
+        timer = findViewById(R.id.anim_mic);
+        icon_recording = findViewById(R.id.icon_recording);
 
         takephoto = findViewById(R.id.takephoto);
         takephoto.setOnClickListener(this);
+        findViewById(R.id.takephoto).setOnClickListener((View view) -> {
+            options.setPreSelectedUrls(returnValue);
+
+            Pix.start(CRUDVisits.this, options);
+        });
 
         save = findViewById(R.id.save);
         save.setOnClickListener(this);
+        mprogressBar = findViewById(R.id.mProgressBarSave);
 
         recyclerView = findViewById(R.id.rv_images);
 
+        //Voice methods
         voicerecognizr();
-        populateUserDrownMenu();
-
-
-
 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayout.VERTICAL));
         imagesAdapter = new AdapterImages(this);
+        recyclerView.setAdapter(imagesAdapter);
+
         options = Options.init()
                 .setRequestCode(100)
                 .setCount(10)
@@ -198,20 +199,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
                 .setVideoDurationLimitinSeconds(30)
                 .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
                 .setPath("/ATHM2");
-        recyclerView.setAdapter(imagesAdapter);
-
-        findViewById(R.id.takephoto).setOnClickListener((View view) -> {
-            options.setPreSelectedUrls(returnValue);
-            Pix.start(CRUDVisits.this, options);
-        });
-
-
-
-
-        if (extras != null) {
-            t1 = findViewById(R.id.titol_obra);
-            t1.setText("Nova visita a l'obra " + title);
-        }
 
         requestSignIn();
         verifyStoragePermissions(this);
@@ -226,24 +213,22 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         nom_respo.setAdapter(adaptador);
     }
 
-
     private void voicerecognizr() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         mic_in = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.mic_to_click_button);
         mic_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_close_button);
         bilink = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bilink);
+
         timeFormatter = new SimpleDateFormat("m:ss", Locale.getDefault());
-
-
-
 
         final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
         handler = new Handler(Looper.getMainLooper());
 
-
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
+
             String text = String.valueOf(descripcion.getText());
 
             @Override
@@ -255,7 +240,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             public void onBeginningOfSpeech() {
                 text = String.valueOf(descripcion.getText());
                 descripcion.setText("");
-                descripcion.setHint("Espera un moment...");
+                descripcion.setHint(R.string.waiting);
             }
 
             @Override
@@ -289,7 +274,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
 
             @Override
             public void onResults(Bundle bundle) {
-                //micButton.setImageResource(R.drawable.ic_mic_black_off);
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 descripcion.setText(text +" "+ data.get(0));
             }
@@ -310,20 +294,26 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP){
                     speechRecognizer.stopListening();
+
                     timer.setVisibility(View.GONE);
                     icon_recording.setVisibility(View.GONE);
                     descripcion.setVisibility(View.VISIBLE);
+
                     micButton.animate().scaleX(1f).scaleY(1f).translationX(0).translationY(0).setDuration(100).setInterpolator(new LinearInterpolator()).start();
                     icon_recording.clearAnimation();
+
                     timerTask.cancel();
 
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
                     speechRecognizer.startListening(speechRecognizerIntent);
+
                     icon_recording.setVisibility(View.VISIBLE);
                     timer.setVisibility(View.VISIBLE);
                     descripcion.setVisibility(View.INVISIBLE);
+
                     micButton.animate().scaleXBy(1f).scaleYBy(1f).translationX(-50).translationY(-20).setDuration(200).setInterpolator(new LinearInterpolator()).start();
+
                     icon_recording.startAnimation(bilink);
 
                     if (audioTimer == null) {
@@ -359,14 +349,13 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         String data_visita, hora_visita, responsable, nom_visit, descripcio;
         ArrayList<String> media = new ArrayList<String>();
 
-        if (
-                //Utils.validar(nomtxt, descripciotxt, categoriatxt, msgbeacontxt, bIdtxt)
-        true) {
+        if (Utils.validar(nom_visita, nom_respo, pickdata, picktime, descripcion)) {
             nom_visit = nom_visita.getText().toString();
             responsable = nom_respo.getText().toString();
             data_visita = pickdata.getText().toString();
             hora_visita = picktime.getText().toString();
             descripcio = descripcion.getText().toString();
+
             for(int i=0; i<returnValue.size();i++) {
                 Log.e("LOOK ARRAY",returnValue.toString());
                 media.add(returnValue.get(i));
@@ -408,7 +397,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         if (mDriveServiceHelper != null) {
             Log.d(TAG, "Creating a file.");
             mDriveServiceHelper.createFolder();
-            mDriveServiceHelper.createFile(returnValue, t1.getText().toString());
+            mDriveServiceHelper.createFile(returnValue, title_obra.getText().toString());
 /*                    .addOnSuccessListener(fileId -> readFile(fileId))
                     .addOnFailureListener(exception ->
                             Log.e(TAG, "Couldn't create file.", exception));*/
@@ -428,22 +417,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         // The result of the sign-in Intent is handled in onActivityResult.
         startActivityForResult(client.getSignInIntent(), REQUEST_CODE_SIGN_IN);
     }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.pickdata:
-                showDatePickerDialog();
-                break;
-            case R.id.picktime:
-                showTimePickerDialog();
-                break;
-            case R.id.save:
-                insertData();
-                break;
-        }
-    }
-
 /*
     private void takephoto() {
         String[] necessaryPermissions = new String[]{Manifest.permission.CAMERA};
@@ -468,7 +441,6 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     }
 
 */
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -506,9 +478,29 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},RecordAudioRequestCode);
+        }
+    }
 
     private void requestPermissionsCompat(String[] permissions, int requestCode) {
         ActivityCompat.requestPermissions(CRUDVisits.this, permissions, requestCode);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.pickdata:
+                showDatePickerDialog();
+                break;
+            case R.id.picktime:
+                showTimePickerDialog();
+                break;
+            case R.id.save:
+                insertData();
+                break;
+        }
     }
 
     private void showDatePickerDialog() {
@@ -543,11 +535,4 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
         super.onDestroy();
         speechRecognizer.destroy();
     }
-
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},RecordAudioRequestCode);
-        }
-    }
-
 }

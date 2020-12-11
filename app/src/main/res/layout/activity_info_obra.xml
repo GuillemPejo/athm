@@ -32,20 +32,20 @@
                 android:id="@+id/info_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Info"
+                android:text="@string/tab_text_1"
                 />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/visitas_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Visites" />
+                android:text="@string/tab_text_2" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/docs_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Docs" />
+                android:text="@string/tab_text_3" />
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager.widget.ViewPager

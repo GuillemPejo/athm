@@ -39,30 +39,30 @@ public class Utils {
     }
 
     public static boolean validar(EditText... editTexts){
-        EditText nomtxt = editTexts[0];
-        EditText descripciotxt = editTexts[1];
-        EditText adreçatxt = editTexts[2];
-        EditText msgbeacontxt = editTexts[3];
-        EditText bId = editTexts[4];
+        EditText nomvisita = editTexts[0];
+        EditText nomrespo = editTexts[1];
+        EditText data = editTexts[2];
+        EditText hora = editTexts[3];
+        EditText descripcio = editTexts[4];
 
-        if(nomtxt.getText() == null || nomtxt.getText().toString().isEmpty()){
-            nomtxt.setError("El nom és obligatòri!");
+        if(nomvisita.getText() == null || nomvisita.getText().toString().isEmpty()){
+            nomvisita.setError("El nom de la visita és obligatòri!");
             return false;
         }
-        if(descripciotxt.getText() == null || descripciotxt.getText().toString().isEmpty()){
-            descripciotxt.setError("La descripcio és obligatòria!");
+        if(nomrespo.getText() == null || nomrespo.getText().toString().isEmpty()){
+            nomrespo.setError("El nom del responsable és obligatori!");
             return false;
         }
-        if(adreçatxt.getText() == null || adreçatxt.getText().toString().isEmpty()){
-            adreçatxt.setError("L'adreça és obligatòria!");
+        if(data.getText() == null || data.getText().toString().isEmpty()){
+            data.setError("La data és important");
             return false;
         }
-        if(msgbeacontxt.getText() == null || msgbeacontxt.getText().toString().isEmpty()){
-            msgbeacontxt.setError("El missatge de la notifiació és obligatòri!");
+        if(hora.getText() == null || hora.getText().toString().isEmpty()){
+            hora.setError("La hora és important");
             return false;
         }
-        if(bId.getText() == null || bId.getText().toString().isEmpty()){
-            bId.setError("L'ID del Beacon és obligatòri!");
+        if(descripcio.getText() == null || descripcio.getText().toString().isEmpty()){
+            descripcio.setError("La descripció és recomenable");
             return false;
         }
         return true;

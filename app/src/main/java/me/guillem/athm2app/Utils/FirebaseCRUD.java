@@ -26,7 +26,6 @@ import static me.guillem.athm2app.Utils.Utils.DataCacheVisits;
 
 import me.guillem.athm2app.Model.Obra;
 import me.guillem.athm2app.Model.RecyclerAdapterCardsHome;
-import me.guillem.athm2app.Views.HomeActivity;
 
 
 public class FirebaseCRUD {
@@ -95,7 +94,7 @@ public class FirebaseCRUD {
                 .frozen(false)
                 .duration(1200)
                 .count(3)
-                .load(R.layout.skeleton_row)
+                .load(R.layout.skeleton_obra_item)
                 .show(); //default count is 10
         db.child("Obra").addValueEventListener(new ValueEventListener() {
             @Override

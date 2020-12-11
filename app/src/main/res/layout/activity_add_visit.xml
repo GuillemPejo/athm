@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="20dp"
-                    android:text="Titol"
+                    android:text="@string/title_obra_to_new_visit"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Nom de la visita"
+                    android:hint="@string/name_new_visit"
                     android:paddingLeft="20dp"
                     android:paddingTop="10dp"
                     android:paddingRight="20dp"
@@ -72,7 +72,7 @@
                     android:layout_height="match_parent"
                     app:startIconDrawable="@drawable/ic_baseline_person_24"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:hint="Nom del responsable">
+                    android:hint="@string/author_new_visit">
 
                     <AutoCompleteTextView
                         android:id="@+id/nom_respo"
@@ -103,7 +103,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="00:00"
+                        android:text="@string/timer_audio_recording"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/mic_button"
                         app:layout_constraintEnd_toStartOf="@+id/mic_button"
@@ -116,7 +116,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:hint="Data"
+                        android:hint="@string/date_new_visit"
                         android:paddingLeft="20dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
@@ -141,7 +141,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:hint="Hora"
+                        android:hint="@string/time_new_visit"
                         android:paddingLeft="20dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
@@ -190,7 +190,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Descripció de l'obra"
+                        android:hint="@string/descripcio_new_visit"
                         android:paddingLeft="20dp"
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
@@ -273,7 +273,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:text="SAVE DATA" />
+                    android:text="@string/button_save_new_visit" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

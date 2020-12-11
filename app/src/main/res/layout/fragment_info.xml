@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="16dp"
-                    android:text="DIRECCIÓ D'OBRA" />
+                    android:text="@string/author_obra" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                         android:layout_alignBottom="@+id/imageView3"
                         android:layout_toEndOf="@+id/imageView3"
                         android:gravity="center"
-                        android:text="Ramon"
+                        android:text="@string/autor_obra_text"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                         app:layout_constraintStart_toEndOf="@+id/imageView3"
                         app:layout_constraintTop_toTopOf="@+id/imageView3"
@@ -70,14 +70,14 @@
                     android:paddingTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="REFERÈNCIA"
+                    android:text="@string/ref_obra"
                     android:textStyle="bold"
                     android:textSize="16dp"/>
                 <TextView
                     android:id="@+id/referencia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="REF2202"/>
+                    android:text="@string/ref_obra_text"/>
 
                 <TextView
                     android:id="@+id/t_estat"
@@ -86,12 +86,12 @@
                     android:textSize="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ESTAT"/>
+                    android:text="@string/state_obra"/>
                 <TextView
                     android:id="@+id/estat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="EN CURS"/>
+                    android:text="@string/state_obra_text"/>
 
                 <TextView
                     android:id="@+id/t_tpermis"
@@ -100,12 +100,12 @@
                     android:textSize="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TIP. PERMÍS"/>
+                    android:text="@string/type_permision_obra"/>
                 <TextView
                     android:id="@+id/t_permis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="OBRA MAJOR"/>
+                    android:text="@string/type_permision_obra_text"/>
 
                 <TextView
                     android:id="@+id/t_prorroga"
@@ -114,12 +114,12 @@
                     android:textSize="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PRÒRROGA"/>
+                    android:text="@string/extension_obra"/>
                 <TextView
                     android:id="@+id/prorroga"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="30 dies"/>
+                    android:text="@string/extension_obra_text"/>
 
 
             </LinearLayout>
@@ -152,7 +152,7 @@
                     android:id="@+id/data_inici"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00-00-00"
+                    android:text="@string/date_start_obra"
                     android:layout_marginEnd="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -161,7 +161,7 @@
                     android:id="@+id/data_fi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00-00-00"
+                    android:text="@string/date_end_obra"
                     android:layout_marginEnd="30dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />

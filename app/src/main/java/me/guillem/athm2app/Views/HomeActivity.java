@@ -48,80 +48,66 @@ import me.guillem.athm2app.Utils.Utils;
 
 public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
-    private RecyclerView rv;
     private boolean clicked = false;
-    public MaterialCardView card;
-    public ProgressBar mProgressBar;
-    public FrameLayout layer_transparent;
-    private FirebaseCRUD recurs_crud = new FirebaseCRUD();
-    private LinearLayoutManager layoutManager;
-    protected RecyclerAdapterCardsHome adapter;
-    private FloatingActionButton button_new, button_newvisit, button_newobra;
 
     private Animation fromBottom, rotateOpen, rotateClose, toBottom;
     private TextView tnv, tno, data_user;
+    private RecyclerView rv;
+    private ProgressBar mProgressBar;
+    private FrameLayout layer_transparent;
+    private LinearLayoutManager layoutManager;
+    private FloatingActionButton button_new, button_newvisit, button_newobra;
 
     private final Context c = HomeActivity.this;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
+    private FirebaseCRUD recurs_crud = new FirebaseCRUD();
+    private RecyclerAdapterCardsHome adapter;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        card = findViewById(R.id.card);
-        layer_transparent = findViewById(R.id.shadow_layer);
-        button_new = findViewById(R.id.button_add_new);
-        button_newobra = findViewById(R.id.button_new_obra);
-        button_newvisit = findViewById(R.id.button_new_visit);
+
+        //Animations
         fromBottom = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.from_button_anim);
         rotateOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_open_anim);
         toBottom = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.to_button_anim);
         rotateClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_close_button);
+
+        //Floating button
+        layer_transparent = findViewById(R.id.shadow_layer);
+        disableFrameLayer();
+        button_new = findViewById(R.id.button_add_new);
+        button_newobra = findViewById(R.id.button_new_obra);
+        button_newvisit = findViewById(R.id.button_new_visit);
         tno = findViewById(R.id.tvobra);
         tnv = findViewById(R.id.tvvisita);
 
+        //Get username
         mAuth = FirebaseAuth.getInstance();
-
         data_user = findViewById(R.id.data_user);
-
         sayHello();
+
 
         mProgressBar = findViewById(R.id.mProgressBarLoad);
         mProgressBar.setIndeterminate(true);
 
-        Utils.showProgressBar(mProgressBar);
-
+        //RecyclerView
         rv = findViewById(R.id.recycler_cards);
-
         layoutManager = new LinearLayoutManager(this);
-
         rv.setLayoutManager(layoutManager);
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rv.getContext(), layoutManager.getOrientation());
         //rv.addItemDecoration(dividerItemDecoration);
         adapter=new RecyclerAdapterCardsHome(this,Utils.DataCache);
-
         rv.setAdapter(adapter);
-
 
         bindDades();
 
-        disableFrameLayer();
-/*
-        button_newvisit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.selectObra(c);
-            }
-        });*/
-
-
-
-/*
-        Visita v1 = new Visita("12-12-12","13:20","Ramon","Restauracio de pis","La infrastructura bla bla", "-MLhWLAAAAArlOKFjNXj");
+/*      Visita v1 = new Visita("12-12-12","13:20","Ramon","Restauracio de pis","La infrastructura bla bla", "-MLhWLAAAAArlOKFjNXj");
         mDatabaseRef.child("Visita").child("-MLhwvv4r32r313D8gsh").push().setValue(v1).
                 addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -134,10 +120,10 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         }
                     }
                 });
-
 */
     }
 
+    //Say hello to Google Username depending de hour
     private void sayHello() {
         String username = "";
         if (mAuth != null) username = mAuth.getCurrentUser().getDisplayName();
@@ -161,14 +147,13 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         data_user.setText(msg);
-
     }
 
     private void bindDades(){
         recurs_crud.select(this,Utils.getDatabaseRefence(),mProgressBar,rv,adapter);
-
     }
 
+    //Button to see MapView
     public void afegirDes(View view) {
         //Intent intent = new Intent(this, MapsActivity.class);
         Intent intent = new Intent(this, TestingDrive.class);
@@ -198,21 +183,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         return super.onOptionsItemSelected(item);
     }
-
-    protected void onResume() {
-        super.onResume();
-        bindDades();
-    }
-
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {return false;}
-
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {return false;}
-
     @Override
     public boolean onQueryTextSubmit(String query) {return false;}
-
     @Override
     public boolean onQueryTextChange(String query) {
         Utils.searchString=query;
@@ -239,6 +215,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             layer_transparent.setVisibility(View.VISIBLE);
             tno.setVisibility(View.VISIBLE);
             tnv.setVisibility(View.VISIBLE);
+            rv.setEnabled(false);
 
             //SET ANIMATION
             button_new.startAnimation(rotateOpen);
@@ -260,6 +237,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             layer_transparent.setVisibility(View.INVISIBLE);
             tno.setVisibility(View.INVISIBLE);
             tnv.setVisibility(View.INVISIBLE);
+            rv.setEnabled(true);
+
 
             //SET ANIMATION
             button_new.startAnimation(rotateClose);
@@ -287,4 +266,10 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
         });
     }
+
+    protected void onResume() {
+        super.onResume();
+        bindDades();
+    }
+
 }
