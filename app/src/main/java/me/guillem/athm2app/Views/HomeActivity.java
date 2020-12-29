@@ -170,6 +170,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setIconified(true);
+        addnew_click(getCurrentFocus());
         searchView.setQueryHint("Buscar");
         searchView.setLayoutTransition(new LayoutTransition());
         return true;

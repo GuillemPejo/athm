@@ -32,7 +32,6 @@ public class DetailObra extends AppCompatActivity {
     RecyclerAdapterCardsVisits adapter;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

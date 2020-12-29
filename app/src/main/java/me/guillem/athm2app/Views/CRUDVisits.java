@@ -1,6 +1,7 @@
 package me.guillem.athm2app.Views;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -121,6 +123,7 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     private AutoCompleteTextView nom_respo;
     private ProgressBar mprogressBar;
     protected RecyclerView recyclerView;
+    private ActionBar actionBar;
 
     private ArrayList<String> returnValue = new ArrayList<>();
     private int audioTotalTime;
@@ -131,6 +134,16 @@ public class CRUDVisits extends AppCompatActivity implements View.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_visit);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_chevron_left_24);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             checkPermission();

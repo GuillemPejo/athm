@@ -22,7 +22,9 @@ public class SplashScreen extends AppCompatActivity {
         FirebaseUser user =  mAuth.getCurrentUser();
 
         Intent go_home = new Intent(this, HomeActivity.class);
-        mAuth.signOut();
+
+
+        //mAuth.signOut();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
